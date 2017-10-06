@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ControllerUIDebugger : MonoBehaviour {
+public class DPadUIDebugger : MonoBehaviour {
 
 	public GameObject upButton;
 	public GameObject downButton;
@@ -11,47 +11,29 @@ public class ControllerUIDebugger : MonoBehaviour {
 
 	void Update()
 	{
-		if (Input.GetButton("Jump"))
-		{
-			Debug.Log ("Jumping!");
+		if (Input.GetAxis ("DpadUp") > 0f) {
 			upButton.SetActive (true);
-		}
-		else
-		{	
-			Debug.Log ("Not jumping!");
+			downButton.SetActive (false);
+		} else if (Input.GetAxis ("DpadUp") < 0f) {	
 			upButton.SetActive (false);
-		}
-
-		if (Input.GetButton("Fire1"))
-		{
-			Debug.Log ("Fire1!");
 			downButton.SetActive (true);
-		}
-		else
-		{	
-			Debug.Log ("No Fire1!");
+		} else {
+			upButton.SetActive (false);
 			downButton.SetActive (false);
 		}
+		
 
-		if (Input.GetButton("Fire3"))
+		if (Input.GetAxis("DpadRight") > 0f)
 		{
-			Debug.Log ("Fire3!");
 			rightButton.SetActive (true);
+			leftButton.SetActive (false);
 		}
-		else
+		else if (Input.GetAxis("DpadRight") < 0f)
 		{	
-			Debug.Log ("No Fire3!");
 			rightButton.SetActive (false);
-		}
-
-		if (Input.GetButton("Cancel"))
-		{
-			Debug.Log ("Cancel!");
 			leftButton.SetActive (true);
-		}
-		else
-		{	
-			Debug.Log ("Not cancelling!");
+		} else {
+			rightButton.SetActive (false);
 			leftButton.SetActive (false);
 		}
 	}

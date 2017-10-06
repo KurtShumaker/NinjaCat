@@ -48,7 +48,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             // read inputs
             float h = CrossPlatformInputManager.GetAxis("Horizontal");
             float v = CrossPlatformInputManager.GetAxis("Vertical");
-			bool crouch = CrossPlatformInputManager.GetButton("Fire1");
+			bool crouch = CrossPlatformInputManager.GetButton("Crouch");
 
             // calculate move direction to pass to character
             if (m_Cam != null)
