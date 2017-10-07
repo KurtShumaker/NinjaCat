@@ -1,7 +1,11 @@
-# niko_control
+# NinjaCat
 
-## Player Controls Repository
+> Neko Tochi has been overtaken!
+> The people starve as they struggle to provide for their new leaders.
+> Avenge the true emperor by sneaking back into the palace and
+restoring the kingdom to its former glory.
+> Claw your way through adversity to bring down the top dog!
 
-Please check the Issues tab for new bugs and feel free to pull them down as your current task.
+## Main Game Repository
 
-Also feel free to contribute ideas onto the Projects page, where to-dos can be created and converted into tasks. Upon completing the tasks from Projects, move the card to the respective column: In Progress or Done!
+Maintain **Projects** and **Issues** through their respective tabs. Create a new branch for parallel tasks.
