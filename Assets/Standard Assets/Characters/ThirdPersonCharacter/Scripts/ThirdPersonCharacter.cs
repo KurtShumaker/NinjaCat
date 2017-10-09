@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 namespace UnityStandardAssets.Characters.ThirdPerson
 {
@@ -15,6 +16,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		[SerializeField] float m_MoveSpeedMultiplier = 1f;
 		[SerializeField] float m_AnimSpeedMultiplier = 1f;
 		[SerializeField] float m_GroundCheckDistance = 0.1f;
+		[SerializeField] float jumpMoveability = 10f;
 
 		Rigidbody m_Rigidbody;
 		Animator m_Animator;
@@ -65,7 +67,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			}
 			else
 			{
-				HandleAirborneMovement();
+				HandleAirborneMovement(move);
 			}
 
 			ScaleCapsuleForCrouching(crouch);
@@ -153,11 +155,20 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		}
 
 
-		void HandleAirborneMovement()
+		void HandleAirborneMovement(Vector3 vec3_movement)
 		{
 			// apply extra gravity from multiplier:
 			Vector3 extraGravityForce = (Physics.gravity * m_GravityMultiplier) - Physics.gravity;
 			m_Rigidbody.AddForce(extraGravityForce);
+
+			//allows movement while airborne, especially when jumping at a wall face to mount
+			vec3_movement = transform.TransformVector(vec3_movement);
+
+			if (m_Rigidbody.velocity.magnitude < 3f)
+				m_Rigidbody.AddForce(vec3_movement.x * jumpMoveability, 0f, vec3_movement.z * jumpMoveability);
+			else
+				m_Rigidbody.AddForce((vec3_movement.x * jumpMoveability)/3f, 0f, (vec3_movement.z * jumpMoveability)/3f);
+			
 
 			m_GroundCheckDistance = m_Rigidbody.velocity.y < 0 ? m_OrigGroundCheckDistance : 0.01f;
 		}
