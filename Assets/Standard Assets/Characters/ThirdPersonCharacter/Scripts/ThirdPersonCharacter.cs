@@ -38,6 +38,9 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		int groundedHash;
 		int jumpLegHash;
 		int jumpHash;
+		int groundedStateHash;
+
+		AnimatorStateInfo stateInfo;
 
 		void Start()
 		{
@@ -56,11 +59,12 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			groundedHash = Animator.StringToHash ("OnGround");
 			jumpHash = Animator.StringToHash ("Jump");
 			jumpLegHash = Animator.StringToHash ("JumpLeg");
+			groundedStateHash = Animator.StringToHash ("Grounded");
 		}		
 
 		public void Move(Vector3 move, bool crouch, bool jump)
 		{
-
+			stateInfo = m_Animator.GetCurrentAnimatorStateInfo (0); //get current state info in the Base Layer
 			// convert the world relative moveInput vector into a local-relative
 			// turn amount and forward amount required to head in the desired
 			// direction.
@@ -158,7 +162,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			// and assumes one leg passes the other at the normalized clip times of 0.0 and 0.5)
 			float runCycle =
 				Mathf.Repeat(
-					m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime + m_RunCycleLegOffset, 1);
+					stateInfo.normalizedTime + m_RunCycleLegOffset, 1);
 			float jumpLeg = (runCycle < k_Half ? 1 : -1) * m_ForwardAmount;
 			if (m_IsGrounded)
 			{
@@ -201,7 +205,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		void HandleGroundedMovement(bool crouch, bool jump)
 		{
 			// check whether conditions are right to allow a jump:
-			if (jump && !crouch && m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Grounded"))
+			if (jump && !crouch && stateInfo.shortNameHash == groundedStateHash)
 			{
 				// jump!
 				m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x, m_JumpPower, m_Rigidbody.velocity.z);
