@@ -16,7 +16,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		[SerializeField] float m_MoveSpeedMultiplier = 1f;
 		[SerializeField] float m_AnimSpeedMultiplier = 1f;
 		[SerializeField] float m_GroundCheckDistance = 0.1f;
-		[SerializeField] float jumpMoveability = 10f;
+		[SerializeField] float jumpMobility = 10f;
 
 		Rigidbody m_Rigidbody;
 		Animator m_Animator;
@@ -31,6 +31,13 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		CapsuleCollider m_Capsule;
 		bool m_Crouching;
 
+		//StringToHash IDs for better Animator state responsiveness
+		int forwardHash;
+		int turnHash;
+		int crouchHash;
+		int groundedHash;
+		int jumpLegHash;
+		int jumpHash;
 
 		void Start()
 		{
@@ -42,8 +49,14 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 			m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
-		}
 
+			forwardHash = Animator.StringToHash ("Forward");
+			turnHash = Animator.StringToHash ("Turn");
+			crouchHash = Animator.StringToHash ("Crouch");
+			groundedHash = Animator.StringToHash ("OnGround");
+			jumpHash = Animator.StringToHash ("Jump");
+			jumpLegHash = Animator.StringToHash ("JumpLeg");
+		}		
 
 		public void Move(Vector3 move, bool crouch, bool jump)
 		{
@@ -120,14 +133,25 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		void UpdateAnimator(Vector3 move)
 		{
 			// update the animator parameters
-			m_Animator.SetFloat("Forward", m_ForwardAmount, 0.1f, Time.deltaTime);
-			m_Animator.SetFloat("Turn", m_TurnAmount, 0.1f, Time.deltaTime);
-			m_Animator.SetBool("Crouch", m_Crouching);
-			m_Animator.SetBool("OnGround", m_IsGrounded);
+			m_Animator.SetFloat(forwardHash, m_ForwardAmount, 0.1f, Time.deltaTime);
+			m_Animator.SetFloat(turnHash, m_TurnAmount, 0.1f, Time.deltaTime);
+			m_Animator.SetBool(crouchHash, m_Crouching);
+			m_Animator.SetBool(groundedHash, m_IsGrounded);
 			if (!m_IsGrounded)
 			{
-				m_Animator.SetFloat("Jump", m_Rigidbody.velocity.y);
+				m_Animator.SetFloat(jumpHash, m_Rigidbody.velocity.y);
 			}
+
+			/* prior animator.sets using Strings, now replaced with HashIDs
+				m_Animator.SetFloat("Forward", m_ForwardAmount, 0.1f, Time.deltaTime);
+				m_Animator.SetFloat("Turn", m_TurnAmount, 0.1f, Time.deltaTime);
+				m_Animator.SetBool("Crouch", m_Crouching);
+				m_Animator.SetBool("OnGround", m_IsGrounded);
+				if (!m_IsGrounded)
+				{
+					m_Animator.SetFloat("Jump", m_Rigidbody.velocity.y);
+				}
+			*/
 
 			// calculate which leg is behind, so as to leave that leg trailing in the jump animation
 			// (This code is reliant on the specific run cycle offset in our animations,
@@ -138,7 +162,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			float jumpLeg = (runCycle < k_Half ? 1 : -1) * m_ForwardAmount;
 			if (m_IsGrounded)
 			{
-				m_Animator.SetFloat("JumpLeg", jumpLeg);
+				//replaced with HashID for JumpLEg: m_Animator.SetFloat("JumpLeg", jumpLeg);
+				m_Animator.SetFloat (jumpLegHash, jumpLeg);
 			}
 
 			// the anim speed multiplier allows the overall speed of walking/running to be tweaked in the inspector,
@@ -165,11 +190,10 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			vec3_movement = transform.TransformVector(vec3_movement);
 
 			if (m_Rigidbody.velocity.magnitude < 3f)
-				m_Rigidbody.AddForce(vec3_movement.x * jumpMoveability, 0f, vec3_movement.z * jumpMoveability);
+				m_Rigidbody.AddForce(vec3_movement.x * jumpMobility, 0f, vec3_movement.z * jumpMobility);
 			else
-				m_Rigidbody.AddForce((vec3_movement.x * jumpMoveability)/3f, 0f, (vec3_movement.z * jumpMoveability)/3f);
+				m_Rigidbody.AddForce((vec3_movement.x * jumpMobility)/3f, 0f, (vec3_movement.z * jumpMobility)/3f);
 			
-
 			m_GroundCheckDistance = m_Rigidbody.velocity.y < 0 ? m_OrigGroundCheckDistance : 0.01f;
 		}
 
