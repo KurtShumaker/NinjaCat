@@ -39,6 +39,7 @@ public class IKControl : MonoBehaviour {
 					animator.SetIKRotation(AvatarIKGoal.RightHand,rightHandObj.rotation);
 				}
 
+			/* failed stair attempt; these motions need blending with the active animation state
 				GameObject nearestStair = GameObject.FindGameObjectWithTag ("Stairstep");
 				if ((gameObject.transform.position - nearestStair.transform.position).magnitude < 1f) {
 					animator.SetIKPositionWeight(AvatarIKGoal.LeftFoot,1);
@@ -46,6 +47,8 @@ public class IKControl : MonoBehaviour {
 					animator.SetIKPosition(AvatarIKGoal.LeftFoot,nearestStair.transform.position);
 					animator.SetIKRotation(AvatarIKGoal.LeftFoot,nearestStair.transform.rotation);
 				}
+			*/
+
 			}
 
 			//if the IK is not active, set the position and rotation of the hand and head back to the original position
