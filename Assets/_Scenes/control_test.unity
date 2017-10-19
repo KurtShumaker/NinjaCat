@@ -2885,8 +2885,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 892702679}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 82.90781, y: -76.533554, z: -277.668}
+  m_LocalRotation: {x: -0.17514382, y: 0.24435721, z: 0.044909555, w: 0.95267904}
+  m_LocalPosition: {x: -1.5458822, y: -5.309174, z: -8.739244}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1738807965}
@@ -3507,6 +3507,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1ef68e6e23d28c4f9d6c9a39e561883, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Camera: {fileID: 752313528}
 --- !u!4 &1105934602 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400002, guid: aac2a85b362af824391fd3bf18105656, type: 3}
@@ -4341,8 +4342,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1746930915}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 130.29126, y: -125.033875, z: -442.56085}
+  m_LocalRotation: {x: -0.17514382, y: 0.24435721, z: 0.044909555, w: 0.95267904}
+  m_LocalPosition: {x: -1.5458822, y: -6.509174, z: -8.739244}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1738807965}
@@ -4674,6 +4675,7 @@ MonoBehaviour:
   startingHealth: 1000
   currentHealth: 10
   HealthCounter: {fileID: 2139652614}
+  Ragdoll: {fileID: 1033101668030876, guid: 774c30b39983a6648bad9399e603420a, type: 2}
 --- !u!4 &1892391888 stripped
 Transform:
   m_PrefabParentObject: {fileID: 408730, guid: 7737647c22c1fc64a88d5cd030c352ce, type: 2}
