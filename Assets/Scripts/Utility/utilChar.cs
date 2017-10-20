@@ -4,7 +4,11 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace Assets.Scripts.Utility {
+namespace Ninjacat.Utility {
+
+    /// <summary>
+    /// Class containing utility functions for characters.
+    /// </summary>
     static public class utilChar {
 
         // ========================
