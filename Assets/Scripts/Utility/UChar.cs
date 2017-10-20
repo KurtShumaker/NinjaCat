@@ -9,7 +9,7 @@ namespace Ninjacat.Utility {
     /// <summary>
     /// Class containing utility functions for characters.
     /// </summary>
-    static public class utilChar {
+    static public class UChar {
 
         // ========================
         // * DELEGATE DECLARATION *

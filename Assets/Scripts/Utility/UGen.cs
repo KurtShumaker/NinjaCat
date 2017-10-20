@@ -7,7 +7,7 @@ namespace Ninjacat.Utility
     /// <summary>
     /// Class containing general game utility functions.
     /// </summary>
-    static public class utilGen
+    static public class UGen
     {
         /// <summary>
         /// Pauses the game by setting the timescale equal to zero.
