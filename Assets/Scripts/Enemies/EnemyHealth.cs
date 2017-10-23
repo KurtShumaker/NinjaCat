@@ -18,14 +18,12 @@ public class EnemyHealth : MonoBehaviour {
         currentHealth = startingHealth;
 		//HealthCounter.text = currentHealth.ToString();
 		HealthCounter.gameObject.SetActive (false);
-		HealthBar.gameObject.SetActive (false);	
 		bgHealthBar.gameObject.SetActive (false);
 		//should enemies regain health over time?
 	}
    
     public void TakeDamage (int amount)
     {
-		HealthBar.gameObject.SetActive (true);
 		bgHealthBar.gameObject.SetActive (true);
 		HealthCounter.gameObject.SetActive (true); //show UI text bubble
         currentHealth -= amount;
@@ -39,7 +37,7 @@ public class EnemyHealth : MonoBehaviour {
 			Instantiate (Ragdoll, this.gameObject.transform.position, this.gameObject.transform.rotation);
 			//is setting similar movement upon death to moving baddie necessary?
 			HealthCounter.gameObject.SetActive(false); //if dead, don't show health anymore
-			HealthBar.gameObject.SetActive(false);
+			bgHealthBar.gameObject.SetActive(false);
 			Destroy (gameObject);
 		}
 	}

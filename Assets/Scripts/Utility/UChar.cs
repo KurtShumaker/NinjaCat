@@ -55,28 +55,34 @@ namespace Ninjacat.Utility {
         /// <param name="angle">Angle of cone.</param>
         /// <param name="distance">The maximum reach of the hit attempt.</param>
         /// <returns>True if object is hit, else false.</returns>
-        static public bool coneLOS(Transform charTrans, Collider obj, float angle, float distance)
-        {
-            RaycastHit hit;
+		static public bool coneLOS(Transform charTrans, Collider obj, float angle, float distance)
+		{
+			RaycastHit hit;
+			Debug.LogWarning("In coneLOS");
 
-            // direction toward object
-            Vector3 rayDirection = obj.transform.position - charTrans.position;
+			// direction toward object
+			Vector3 rayDirection = obj.transform.position - charTrans.position;
 
-            // check if object falls within the cone's direction
-            if (Vector3.Angle(rayDirection, charTrans.forward) <= angle)
-            {
-                // detect if object is within distance and LOS
-                if (Physics.Raycast(charTrans.position, rayDirection, out hit, distance))
-                {
-                    // if it hit the object you were looking for
-                    if (hit.collider.GetInstanceID() == obj.GetInstanceID())
-                        return true;
-                }
-            }
+			// check if object falls within the cone's direction
+			if (Vector3.Angle(rayDirection, charTrans.forward) <= angle)
+			{
+				Debug.LogWarning("Inside cone.");
+				Debug.DrawLine(charTrans.position, obj.transform.position, Color.red, 5.0f, true);
+				// detect if object is within distance and LOS
+				if (Physics.Raycast(charTrans.position, rayDirection, out hit, distance, Int32.MaxValue - (int)UGen.eLayerMask.PLAYER))
+				{
+					Debug.LogWarning("ID: " + hit.collider.GetInstanceID().ToString() + " distance: " + hit.distance.ToString());
+					Debug.LogWarning("Object Hit: " + hit.collider.name);
+					Debug.LogWarning("Within Reach.");
+					// if it hit the object you were looking for
+					if (hit.collider.GetInstanceID() == obj.GetInstanceID())
+						return true;
+				}
+			}
 
-            // object was not hit
-            return false;
-        }
+			// object was not hit
+			return false;
+		}
 
 
 
@@ -89,30 +95,32 @@ namespace Ninjacat.Utility {
         /// <param name="distance">The maximum reach of the hit attempt.</param>
         /// <param name="calcScore">The function to calculate target likelihood.</param>
         /// <returns>Object interacted with, or null if none.</returns>
-        static public GameObject actOnLayer(Transform charTrans, int layerMask, float angle, float distance, ScoreFunc calcScore) {
-            GameObject ret = null; // game object returned by function
-            float bestScore;       // score for best candidate for target
-            float currScore;       // score for current object
-            Vector3 rayDirection;  // angle between character's forward and object
+		static public GameObject actOnLayer(Transform charTrans, int layerMask, float angle, float distance, ScoreFunc calcScore) {
+			GameObject ret = null; // game object returned by function
+			float bestScore;       // score for best candidate for target
+			float currScore;       // score for current object
+			Vector3 rayDirection;  // angle between character's forward and object
 
-            // Get list of nearby objects in desired layers
-            Collider[] objects = Physics.OverlapSphere(charTrans.position, distance, layerMask);
+			// Get list of nearby objects in desired layers
+			Collider[] objects = Physics.OverlapSphere(charTrans.position, distance, layerMask);
 
-            // get the likeliest target object
-            bestScore = calcScore(angle + 1.0f, distance + 1.0f); // initialize bestScore
-            foreach (Collider obj in objects) { // check each nearby object
-                if (coneLOS(charTrans, obj, angle, distance)) { // if object was hit, check its target score
-                    rayDirection = obj.transform.position - charTrans.position;
-                    currScore = calcScore(Vector3.Angle(charTrans.forward, rayDirection), Vector3.Distance(charTrans.position, obj.transform.position));
-                    if (currScore > bestScore) { // if it's likelier to be the target, set it as the target
-                        bestScore = currScore;
-                        ret = obj.gameObject;
-                    }
-                }
-            }
+			// get the likeliest target object
+			bestScore = calcScore(angle + 1.0f, distance + 1.0f); // initialize bestScore
+			foreach (Collider obj in objects) { // check each nearby object
+				if (coneLOS(charTrans, obj, angle, distance)) { // if object was hit, check its target score
+					rayDirection = obj.transform.position - charTrans.position;
+					currScore = calcScore(Vector3.Angle(charTrans.forward, rayDirection), Vector3.Distance(charTrans.position, obj.transform.position));
+					Debug.LogWarning("best: " + bestScore.ToString() + " curr: " + currScore.ToString());
+					if (currScore > bestScore) { // if it's likelier to be the target, set it as the target
+						bestScore = currScore;
+						Debug.LogWarning("best: " + bestScore.ToString() + " curr: " + currScore.ToString());
+						ret = obj.gameObject;
+					}
+				}
+			}
 
-            return ret;
-        }
+			return ret;
+		}
 
         /// <summary>
         /// Interact with nearby object of given type (layer).
