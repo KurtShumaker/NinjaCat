@@ -13,7 +13,6 @@ public class JoystickUIDebugger : MonoBehaviour {
 
 	void Update () {
 		if (Input.GetAxis ("Horizontal") > 0f) { //if right
-			Debug.Log("Moving right");
 			newZRotation = 90f;
 			joystick.SetActive(true);
 		} else if (Input.GetAxis ("Horizontal") < 0f) {	//else if left
