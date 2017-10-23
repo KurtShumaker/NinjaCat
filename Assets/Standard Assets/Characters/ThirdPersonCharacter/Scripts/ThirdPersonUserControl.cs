@@ -35,10 +35,12 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
         private void Update()
         {
-            if (!m_Jump)
-            {
-                m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
-            }
+			if (CrossPlatformInputManager.GetButtonDown("Crouch"))
+				crouch = !crouch;
+			if (!m_Jump)
+			{
+				m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
+			}
         }
 
 
@@ -48,8 +50,6 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             // read inputs
             float h = CrossPlatformInputManager.GetAxis("Horizontal");
             float v = CrossPlatformInputManager.GetAxis("Vertical");
-			if (CrossPlatformInputManager.GetButtonDown("Crouch"))
-				crouch = !crouch;
 
             // calculate move direction to pass to character
             if (m_Cam != null)
