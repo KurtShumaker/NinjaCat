@@ -4,7 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
+<<<<<<< HEAD
   - Stairstep
+=======
+  - Enemy
+>>>>>>> combatScripts
   layers:
   - Default
   - TransparentFX
