@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Ninjacat.Utility;
 
-namespace Ninjacat.Characters.ThirdPerson
+namespace Ninjacat.Characters.Control
 {
 	[RequireComponent(typeof(Rigidbody))]
 	[RequireComponent(typeof(CapsuleCollider))]
@@ -301,7 +301,5 @@ namespace Ninjacat.Characters.ThirdPerson
 			m_Interacting = false;
 		}
 
-		// * END      INTERACTION       BRANCH       ADDITION *
-		// ----------------------------------------------------
-	}
-}
+	} // close class
+} // close namespace

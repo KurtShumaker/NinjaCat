@@ -11,7 +11,7 @@ public class ShoulderButtonsUIDebugger : MonoBehaviour {
 
 	void Update()
 	{
-		if (Input.GetButton("Fire1"))
+		if (Input.GetButton("AttackWeak"))
 		{
 			rightBumper.SetActive (true);
 		}
@@ -29,7 +29,7 @@ public class ShoulderButtonsUIDebugger : MonoBehaviour {
 			leftBumper.SetActive (false);
 		}
 
-		if (Input.GetAxis("Fire2") > 0f || Input.GetButton("Fire2"))
+		if (Input.GetAxis("AttackStrong") > 0f || Input.GetButton("AttackStrong"))
 		{
 			rightTrigger.SetActive (true);
 		}

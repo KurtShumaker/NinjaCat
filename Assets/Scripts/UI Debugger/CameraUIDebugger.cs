@@ -12,37 +12,37 @@ public class CameraUIDebugger : MonoBehaviour {
 	}
 
 	void Update () {
-		if (Input.GetAxis ("Mouse X") > 0f) { //if right
+		if (Input.GetAxis ("CamHori") > 0f) { //if right
 			newZRotation = 90f;
 			joystick.SetActive(true);
-		} else if (Input.GetAxis ("Mouse X") < 0f) {	//else if left
+		} else if (Input.GetAxis ("CamHori") < 0f) {	//else if left
 			newZRotation = -90f;
 			joystick.SetActive(true);
 		} else { //else centered
 			joystick.SetActive(false);
 		}
 
-		if (Input.GetAxis("Mouse Y") < 0f) // if up
+		if (Input.GetAxis("CamVert") < 0f) // if up
 		{
 			joystick.SetActive(true);
 			//if up left
-			if (Input.GetAxis ("Mouse X") < 0f)
+			if (Input.GetAxis ("CamHori") < 0f)
 				newZRotation = -135f;
 			//else if up right
-			else if (Input.GetAxis ("Mouse X") > 0f)
+			else if (Input.GetAxis ("CamHori") > 0f)
 				newZRotation = 135f;
 			//else just up
 			else
 				newZRotation = 180f;
 		}
-		else if (Input.GetAxis("Mouse Y") > 0f) //if down
+		else if (Input.GetAxis("CamVert") > 0f) //if down
 		{	
 			joystick.SetActive(true);
 			//if down left
-			if (Input.GetAxis ("Mouse X") < 0f)
+			if (Input.GetAxis ("CamHori") < 0f)
 				newZRotation = 315f;
 			//else if down right
-			else if (Input.GetAxis ("Mouse X") > 0f)
+			else if (Input.GetAxis ("CamHori") > 0f)
 				newZRotation = 45f;
 			//else just down
 			else
