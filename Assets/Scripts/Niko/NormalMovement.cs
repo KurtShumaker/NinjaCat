@@ -30,11 +30,19 @@ namespace Ninjacat.Characters.Control
 		Vector3 m_CapsuleCenter;
 		CapsuleCollider m_Capsule;
 		bool m_Crouching;
-		bool m_Interacting; // Added in Interaction Branch
-		GameObject obj_Interact = null; // object currently being acted on // Added in Interaction Branch
+		bool m_Interacting;
+		GameObject obj_Interact; // object currently being acted on
 
-		//StringToHash IDs for better Animator state responsiveness
-		int forwardHash;
+        // from other file
+        private Transform m_Cam;      // A reference to the main camera in the scenes transform
+        private Vector3 m_CamForward; // The current forward direction of the camera
+        private Vector3 m_Move;       // the world-relative desired move direction, calculated from the camForward and user input.
+        private bool m_Jump;          // jump button press
+        private bool m_interact;      // interact button press
+        private bool m_crouch;        // crouch button state (toggle)
+
+        //StringToHash IDs for better Animator state responsiveness
+        int forwardHash;
 		int turnHash;
 		int crouchHash;
 		int groundedHash;
@@ -51,6 +59,7 @@ namespace Ninjacat.Characters.Control
 			m_Capsule = GetComponent<CapsuleCollider>();
 			m_CapsuleHeight = m_Capsule.height;
 			m_CapsuleCenter = m_Capsule.center;
+            obj_Interact = null;
 
 			m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
@@ -62,7 +71,62 @@ namespace Ninjacat.Characters.Control
 			jumpHash = Animator.StringToHash ("Jump");
 			jumpLegHash = Animator.StringToHash ("JumpLeg");
 			groundedStateHash = Animator.StringToHash ("Grounded");
-		}
+
+            // from other file
+            // get the transform of the main camera
+            if (Camera.main != null)
+            {
+                m_Cam = Camera.main.transform;
+            }
+            else
+            {
+                Debug.LogWarning(
+                    "Warning: no main camera found. Third person character needs a Camera tagged \"MainCamera\", for camera-relative controls.", gameObject);
+                // we use self-relative controls in this case, which probably isn't what the user wants, but hey, we warned them!
+            }
+        }
+
+
+        /// <summary>
+        /// Default movement control scheme.
+        /// </summary>
+        /// <param name="btns">The buttons that have been pressed since last update.</param>
+        public void Interface(ButtonPresses btns) {
+            // read inputs
+            float h = Input.GetAxis("Horizontal");
+            float v =Input.GetAxis("Vertical");
+
+            // calculate move direction to pass to character
+            if (m_Cam != null)
+            {
+                // calculate camera relative direction to move:
+                m_CamForward = Vector3.Scale(m_Cam.forward, new Vector3(1, 0, 1)).normalized;
+                m_Move = v * m_CamForward + h * m_Cam.right;
+            }
+            else
+            {
+                // we use world-relative directions in the case of no main camera
+                m_Move = v * Vector3.forward + h * Vector3.right;
+            }
+
+            // don't jump in mid-air
+            if (!m_Jump)
+            {
+                m_Jump = btns.jump;
+            }
+
+            // toggle crouch
+            if (btns.crouch)
+                m_crouch = !m_crouch;
+
+            // pass all parameters to the character control script
+            Move(m_Move, m_crouch, m_Jump);
+            m_Jump = false;
+
+            // call interact script
+            Interact(m_interact);
+            m_interact = false;
+        }
 
 
 		public void Move(Vector3 move, bool crouch, bool jump)
@@ -266,8 +330,7 @@ namespace Ninjacat.Characters.Control
 			}
 		}
 
-		// ----------------------------------------------------
-		// * ADDED IN INTERACTION BRANCH. DELETE THIS COMMENT *
+
 
 		/// <summary>
 		/// Start or continue interaction with an object.
