@@ -12,8 +12,11 @@ public class Attack_Script : MonoBehaviour {
         if (collision.rigidbody) //if the target of the collision has a rigidbody, try to do damage to it
         {
 			Debug.Log ("Colliding with rigidbody");
-            EnemyHealth enemyHealth = collision.collider.GetComponent<EnemyHealth>();   // checks to see if the object attacked has a EnemyHealth script
-            enemyHealth.TakeDamage(m_damagePerHit);
+            if (Input.GetMouseButton(0))
+            {
+                EnemyHealth enemyHealth = collision.collider.GetComponent<EnemyHealth>();   // checks to see if the object attacked has a EnemyHealth script
+                enemyHealth.TakeDamage(m_damagePerHit);
+            }
         }
     }
 }
