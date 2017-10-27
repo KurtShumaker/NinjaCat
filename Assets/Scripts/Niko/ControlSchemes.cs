@@ -144,7 +144,7 @@ namespace Ninjacat.Characters.Control
             }
             else if (Input.GetAxis("Items24") < -0.5f) {
                 buttons.item2 = false;
-                buttons.item3 = true;
+                buttons.item4 = true;
             }
 
             if (Input.GetButtonDown("QuickMenu"))
