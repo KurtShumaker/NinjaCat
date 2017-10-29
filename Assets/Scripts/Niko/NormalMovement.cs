@@ -124,7 +124,7 @@ namespace Ninjacat.Characters.Control
             m_Jump = false;
 
             // call interact script
-            Interact(m_interact);
+            Interact(btns.interact);
             m_interact = false;
         }
 
@@ -339,15 +339,12 @@ namespace Ninjacat.Characters.Control
 		public void Interact(bool interact) {
 			if (interact) {
 				if (!m_Interacting) {
-					obj_Interact = UChar.actOnLayer(m_Rigidbody.transform, (int)UGen.eLayerMask.NPC, 60.0f, 5.0f);
+					obj_Interact = UChar.actOnLayer(m_Rigidbody.gameObject, (int)UGen.eLayerMask.NPC, 60.0f, 5.0f);
+
 					if (obj_Interact != null)
 					{
-						Debug.LogWarning("Not Null!");
 						obj_Interact.SendMessage("handleDialogue", m_Rigidbody.gameObject);
 						m_Interacting = true;
-					}
-					else { 
-						Debug.LogWarning("Null!");
 					}
 				}
 				else {
