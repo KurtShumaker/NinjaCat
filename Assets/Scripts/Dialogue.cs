@@ -15,10 +15,12 @@ namespace Assets.Scripts.Character
         // ======================
 
         private Text DialogueBox;
+        private Image DialogueBG;
         [SerializeField] private TextAsset dialogueFile;
         private List<string> lines;       // the separate lines of dialogue stored in text doc
         private List<string> linesRepeat; // lines of dialogue for the character to repeat after lines are finished
         private UInt16 lineNum;           // current line number for character to say
+        private UInt16 lineRNum;          // current repeat line number for character to say
         private UInt16 posInLine;         // the position in the current line
 		private bool bInteracting;        // true when dialogue is open
 
@@ -29,8 +31,9 @@ namespace Assets.Scripts.Character
         // ==================
 
         private void Awake() {
-            // Find dialogue box object
+            // Find dialogue box objects
             DialogueBox = GameObject.Find("DialogueBox").GetComponent<Text>();
+            DialogueBG = GameObject.Find("DialogueBG").GetComponent<Image>();
 
             // set interaction state to false
             bInteracting = false;
@@ -44,6 +47,7 @@ namespace Assets.Scripts.Character
 
             // set text position to 0
             lineNum = 0;
+            lineRNum = 0;
             posInLine = 0;
         }
 
@@ -57,7 +61,6 @@ namespace Assets.Scripts.Character
 			if (!bInteracting) {
                 openDialogueBox(obj);
                 printDialogue();
-				//DialogueBox.text = "Dialogue is happening with " + this.gameObject.GetInstanceID().ToString() + "!";
 			}
 			else {
 				closeDialogueBox(obj);
@@ -78,6 +81,7 @@ namespace Assets.Scripts.Character
         private void openDialogueBox(GameObject obj) {
             DialogueBox.text = "";
             DialogueBox.enabled = true;
+            DialogueBG.enabled = true;
             obj.SendMessage("ConfirmInteraction", this.gameObject);
             bInteracting = true;
         }
@@ -87,6 +91,7 @@ namespace Assets.Scripts.Character
         /// </summary>
         /// <param name="obj">The character that started the dialogue.</param>
         private void closeDialogueBox(GameObject obj) {
+            DialogueBG.enabled = false;
             DialogueBox.enabled = false;
             DialogueBox.text = "";
             obj.SendMessage("EndInteraction", obj);
@@ -100,34 +105,22 @@ namespace Assets.Scripts.Character
         // ==================================
 
         private void textToLines() {
-            string[] tempList = dialogueFile.text.Split(new string[] { "\n\n" }, StringSplitOptions.None); // split by line
-            string tempLine = ""; // line to be added to list
+            string[] tempList = dialogueFile.text.Split(new string[] { "\n\n", "\r\n\r\n", "\r\r" }, StringSplitOptions.None); // split by line
             bool bRepeat = false;  // true when line is to be repeated by character
 
             foreach (string str in tempList) {
-                if (str == "\n") { // add lines to the appropriate list
-                    Debug.LogWarning("new line found");
-                    if (tempLine != "") // unless line is blank
-                    {
-                        Debug.LogWarning("temp line was not blank!");
-                        if (bRepeat)
-                        {
-                            linesRepeat.Add(tempLine);
-                            bRepeat = false;
-                        }
-                        else
-                            lines.Add(tempLine);
-
-                        tempLine = ""; // reset tempLine to blank
-                    }
-                }
-                else if (str == ":repeat:") { // lines below :repeat: are added to linesRepeat
+                if (str == ":repeat:") // lines below :repeat: are added to linesRepeat
                     bRepeat = true;
+                else {
+                    if (bRepeat)
+                    {
+                        linesRepeat.Add(str);
+                        bRepeat = false;
+                    }
+                    else
+                        lines.Add(str);
                 }
-                else { // store lines
-                    Debug.LogWarning("storing tempLine");
-                    tempLine += str;
-                }
+
             }
         }
 
@@ -142,9 +135,22 @@ namespace Assets.Scripts.Character
                 DialogueBox.text = lines[lineNum];
                 lineNum++;
             }
-            else { // there are no lines left to say
-                DialogueBox.text = "...";
+            else { // there are no regular lines left
+                if (linesRepeat.Count > 0) { // if there are repeat lines
+                    if (linesRepeat.Count > lineRNum) // still going through repeatable lines
+                    {
+                        DialogueBox.text = linesRepeat[lineRNum];
+                        lineRNum++;
+                    }
+                    else { // loop at the first repeat line
+                        DialogueBox.text = linesRepeat[0];
+                        lineRNum = 1;
+                    }
+                }
+                else
+                    DialogueBox.text = "...";
             }
+
         }
 
 	} // close class
