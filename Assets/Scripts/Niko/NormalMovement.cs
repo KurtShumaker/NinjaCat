@@ -338,27 +338,32 @@ namespace Ninjacat.Characters.Control
 		/// <param name="interact">True if interact button has been pressed.</param>
 		public void Interact(bool interact) {
 			if (interact) {
-				if (!m_Interacting) {
-					obj_Interact = UChar.actOnLayer(m_Rigidbody.gameObject, (int)UGen.eLayerMask.NPC, 60.0f, 5.0f);
+                GameObject obj;
+                if (!m_Interacting)
+                    obj = UChar.actOnLayer(m_Rigidbody.gameObject, (int)UGen.eLayerMask.NPC, 45.0f, 5.0f);
+                else
+                    obj = obj_Interact;
 
-					if (obj_Interact != null)
-					{
-						obj_Interact.SendMessage("handleDialogue", m_Rigidbody.gameObject);
-						m_Interacting = true;
-					}
-				}
-				else {
-					obj_Interact.SendMessage("handleDialogue", m_Rigidbody.gameObject);
+				if (obj != null) {
+						obj.SendMessage("handleDialogue", m_Rigidbody.gameObject);
 				}
 			}
 		}
 
+        /// <summary>
+        /// Confirm the interaction with an object.
+        /// </summary>
+        private void ConfirmInteraction(GameObject obj) {
+            m_Interacting = true;
+            obj_Interact = obj;
+        }
 
 		/// <summary>
 		/// End the interaction with an object.
 		/// </summary>
-		private void EndInteract() {
-			m_Interacting = false;
+		private void EndInteraction() {
+            m_Interacting = false;
+            obj_Interact = null;
 		}
 
 	} // close class
