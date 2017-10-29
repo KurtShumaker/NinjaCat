@@ -409,8 +409,8 @@ InputManager:
     m_Name: Block
     descriptiveName: 
     descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: left shift
+    negativeButton: b
+    positiveButton: mouse 1
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
@@ -425,8 +425,8 @@ InputManager:
     m_Name: Block
     descriptiveName: 
     descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: 
+    negativeButton: b
+    positiveButton: b
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
