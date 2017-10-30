@@ -159,8 +159,8 @@ namespace Ninjacat.Characters.Control
             if (Input.GetButtonDown("ShowMap"))
                 buttons.showMap = true;
 
-            if (Input.GetButtonDown("Walk"))
-                buttons.walk = true;
+			if (Input.GetButtonDown ("Walk")) 
+				buttons.walk = true;
 		}
 
 

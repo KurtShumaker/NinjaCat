@@ -135,14 +135,13 @@ namespace Ninjacat.Characters.Control
 			// convert the world relative moveInput vector into a local-relative
 			// turn amount and forward amount required to head in the desired
 			// direction.
-			if (move.magnitude > 1f)
-				move.Normalize();
+			if (move.magnitude > 1f) 
+				move.Normalize ();
 			move = transform.InverseTransformDirection(move);
 			CheckGroundStatus();
 			move = Vector3.ProjectOnPlane(move, m_GroundNormal);
 			m_TurnAmount = Mathf.Atan2(move.x, move.z);
 			m_ForwardAmount = move.z;
-
 			ApplyExtraTurnRotation();
 
 			// control and velocity handling is different when grounded and airborne:
@@ -281,6 +280,11 @@ namespace Ninjacat.Characters.Control
 				m_IsGrounded = false;
 				m_Animator.applyRootMotion = false;
 				m_GroundCheckDistance = 0.1f;
+
+
+				//PLACE JUMP HERE
+				//GetComponent<AudioSource>().Play();
+
 			}
 		}
 
