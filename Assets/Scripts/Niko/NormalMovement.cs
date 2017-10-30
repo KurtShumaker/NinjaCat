@@ -32,6 +32,7 @@ namespace Ninjacat.Characters.Control
 		bool m_Crouching;
 		bool m_Interacting;
         bool m_IsAttacking;
+        bool m_IsBlocking;
 
 		GameObject obj_Interact; // object currently being acted on
 
@@ -51,10 +52,13 @@ namespace Ninjacat.Characters.Control
 		int jumpLegHash;
 		int jumpHash;
         int attackingHash;
+        int blockingHash;
 
         int groundedStateHash;
         int crouchingStateHash;
         int attackingStateHash;
+        int blockingStateHash;
+        int airborneStateHash;
 
         AnimatorStateInfo stateInfo;
 
@@ -82,11 +86,14 @@ namespace Ninjacat.Characters.Control
 			jumpHash = Animator.StringToHash ("Jump");
 			jumpLegHash = Animator.StringToHash ("JumpLeg");
             attackingHash = Animator.StringToHash("Attacking");
+            blockingHash = Animator.StringToHash("Blocking");
 
             //State machine hashes
             groundedStateHash = Animator.StringToHash ("Grounded");
             crouchingStateHash = Animator.StringToHash("Crouching");
             attackingStateHash = Animator.StringToHash("Attacking");
+            airborneStateHash = Animator.StringToHash("Airborne");
+            blockingStateHash = Animator.StringToHash("Blocking");
 
             // from other file
             // get the transform of the main camera
@@ -130,8 +137,8 @@ namespace Ninjacat.Characters.Control
             {
                 m_Jump = btns.jump;
 
-                if(btns.jump)
-                    audio.PlayOneShot(jumpingSound, .4f);
+                if(m_Jump && stateInfo.shortNameHash != airborneStateHash)
+                    audio.Play();
             }
 
             // toggle crouch
@@ -232,6 +239,7 @@ namespace Ninjacat.Characters.Control
 			m_Animator.SetBool(crouchHash, m_Crouching);
 			m_Animator.SetBool(groundedHash, m_IsGrounded);
             m_Animator.SetBool(attackingHash, m_IsAttacking);
+            m_Animator.SetBool(blockingHash, m_IsBlocking);
 
 			if (!m_IsGrounded)
 			{
@@ -382,6 +390,11 @@ namespace Ninjacat.Characters.Control
         public void Attack(ButtonPresses btns)
         {
             GameObject victim;
+
+            if (btns.block)
+                m_IsBlocking = true;
+            else
+                m_IsBlocking = false;
 
             if (btns.atkWeak && stateInfo.shortNameHash != attackingStateHash)
             {
