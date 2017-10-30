@@ -18,7 +18,7 @@ namespace Ninjacat.Characters.Control
 		[SerializeField] float m_GroundCheckDistance = 0.1f;
 		[SerializeField] float jumpMobility = 10f;
 
-		public Rigidbody m_Rigidbody;
+		Rigidbody m_Rigidbody;
 		Animator m_Animator;
 		bool m_IsGrounded;
 		float m_OrigGroundCheckDistance;
@@ -31,7 +31,7 @@ namespace Ninjacat.Characters.Control
 		CapsuleCollider m_Capsule;
 		bool m_Crouching;
 		bool m_Interacting;
-        bool m_IsAttacking;
+        int m_IsAttacking;
 
 		GameObject obj_Interact; // object currently being acted on
 
@@ -217,7 +217,7 @@ namespace Ninjacat.Characters.Control
 			m_Animator.SetFloat(turnHash, m_TurnAmount, 0.1f, Time.deltaTime);
 			m_Animator.SetBool(crouchHash, m_Crouching);
 			m_Animator.SetBool(groundedHash, m_IsGrounded);
-            m_Animator.SetBool(attackingHash, m_IsAttacking);
+            m_Animator.SetInteger(attackingHash, m_IsAttacking);
 
 			if (!m_IsGrounded)
 			{
@@ -338,7 +338,7 @@ namespace Ninjacat.Characters.Control
 			if (interact) {
                 GameObject obj;
                 if (!m_Interacting)
-                    obj = UChar.actOnLayer(m_Rigidbody.gameObject, (int)UGen.eLayerMask.NPC, 45.0f, 5.0f);
+                    obj = UChar.actOnLayer(m_Rigidbody.gameObject, (int)UGen.eLayerMask.NPC, 45.0f, 4.0f);
                 else
                     obj = obj_Interact;
 
@@ -367,8 +367,16 @@ namespace Ninjacat.Characters.Control
 
         public void Attack(ButtonPresses btns)
         {
+            GameObject victim;
+
             if (btns.atkWeak)
-                ;
+            {
+                m_IsAttacking = 1;
+
+                victim = UChar.actOnLayer(gameObject, (int)UGen.eLayerMask.ENEMY, 45f, 2f);
+                if(victim != null)
+                    victim.SendMessage("TakeDamage", 50);
+            }
         }
 
 	} // close class

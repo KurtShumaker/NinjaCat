@@ -21,9 +21,6 @@ public class Hero_Health : MonoBehaviour {
     private void Awake()
     {
         currentHealth = startingHealth;
-       
-
-        //should enemies regain health over time?
     }
 
     private void Update()
@@ -39,7 +36,6 @@ public class Hero_Health : MonoBehaviour {
         if(damaged)
         {
             damageImage.color = flashColor;
-
         }
         else
         {
@@ -56,20 +52,15 @@ public class Hero_Health : MonoBehaviour {
         {
             currentHealth -= amount/blockStrength;
             healthSlider.value = currentHealth;
-
-           
         }
         else
         {
             currentHealth -= amount;
             healthSlider.value = currentHealth;
-
-           
         }
         if (currentHealth < 1)
         {
             Instantiate(Ragdoll, this.gameObject.transform.position, this.gameObject.transform.rotation);
-           
             Destroy(gameObject);
         }
     }
