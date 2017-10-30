@@ -3719,8 +3719,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 892702679}
-  m_LocalRotation: {x: -0.07518723, y: 0.7316187, z: 0.08176846, w: 0.6726031}
-  m_LocalPosition: {x: 14.583383, y: 0.53730094, z: -4.932145}
+  m_LocalRotation: {x: -0.11815943, y: 0.4947298, z: 0.0681095, w: 0.85827845}
+  m_LocalPosition: {x: 1.5677347, y: -0.3025202, z: -7.849952}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1738807965}
@@ -5758,7 +5758,7 @@ MonoBehaviour:
   m_RunCycleLegOffset: 0.2
   m_MoveSpeedMultiplier: 1.5
   m_AnimSpeedMultiplier: 1
-  m_GroundCheckDistance: 0.2
+  m_GroundCheckDistance: 0.3
   jumpMobility: 10
 --- !u!114 &1559025278
 MonoBehaviour:
@@ -6605,8 +6605,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1746930915}
-  m_LocalRotation: {x: -0.07518723, y: 0.7316187, z: 0.08176846, w: 0.6726031}
-  m_LocalPosition: {x: 14.583383, y: -0.6626992, z: -4.932145}
+  m_LocalRotation: {x: -0.11815943, y: 0.4947298, z: 0.0681095, w: 0.85827845}
+  m_LocalPosition: {x: 1.5677347, y: -1.5025203, z: -7.849952}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1738807965}
@@ -7109,11 +7109,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 13654204, guid: 54eb5844754051b40a918a84c33b7c1a, type: 2}
       propertyPath: m_Height
-      value: 1.5546323
+      value: 1.5539076
       objectReference: {fileID: 0}
     - target: {fileID: 13654204, guid: 54eb5844754051b40a918a84c33b7c1a, type: 2}
       propertyPath: m_Center.y
-      value: 0.77731615
+      value: 0.7839819
       objectReference: {fileID: 0}
     - target: {fileID: 454696, guid: 54eb5844754051b40a918a84c33b7c1a, type: 2}
       propertyPath: m_LocalRotation.x
@@ -7133,11 +7133,23 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 13654204, guid: 54eb5844754051b40a918a84c33b7c1a, type: 2}
       propertyPath: m_Radius
-      value: 0.18593097
+      value: 0.59
       objectReference: {fileID: 0}
     - target: {fileID: 13654204, guid: 54eb5844754051b40a918a84c33b7c1a, type: 2}
       propertyPath: m_Center.z
       value: -0.03796935
+      objectReference: {fileID: 0}
+    - target: {fileID: 11402594, guid: 54eb5844754051b40a918a84c33b7c1a, type: 2}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 1900103426}
+    - target: {fileID: 13654204, guid: 54eb5844754051b40a918a84c33b7c1a, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 13654204, guid: 54eb5844754051b40a918a84c33b7c1a, type: 2}
+      propertyPath: m_Center.x
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 54eb5844754051b40a918a84c33b7c1a, type: 2}
@@ -7176,9 +7188,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingHealth: 100
   currentHealth: 10
-  HealthCounter: {fileID: 0}
-  bgHealthBar: {fileID: 0}
-  HealthBar: {fileID: 0}
   Ragdoll: {fileID: 1033101668030876, guid: 774c30b39983a6648bad9399e603420a, type: 2}
 --- !u!54 &1999341070
 Rigidbody:

@@ -381,7 +381,7 @@ namespace Ninjacat.Characters.Control
             {
                 m_IsAttacking = true;
 
-                victim = UChar.actOnLayer(gameObject, (int)UGen.eLayerMask.ENEMY, 45f, .7f);
+                victim = UChar.actOnLayer(gameObject, (int)UGen.eLayerMask.ENEMY, 45f, .9f);
                 if (victim != null)
                     victim.SendMessage("TakeDamage", 50);
             }

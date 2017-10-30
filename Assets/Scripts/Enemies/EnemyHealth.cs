@@ -8,9 +8,6 @@ public class EnemyHealth : MonoBehaviour {
 
     public int startingHealth;
     public int currentHealth;
-	public Text HealthCounter;
-	public GameObject bgHealthBar;
-	public Transform HealthBar;
 	public GameObject Ragdoll;
 
     private void Awake()
