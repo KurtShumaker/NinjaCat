@@ -56,11 +56,14 @@ namespace Ninjacat.Characters.Control
         int crouchingStateHash;
         int attackingStateHash;
 
-
         AnimatorStateInfo stateInfo;
+
+        private AudioSource audio;
+        public AudioClip jumpingSound;
 
 		void Start()
 		{
+            audio = GetComponent<AudioSource>();
 			m_Animator = GetComponent<Animator>();
 			m_Rigidbody = GetComponent<Rigidbody>();
 			m_Capsule = GetComponent<CapsuleCollider>();
@@ -126,6 +129,9 @@ namespace Ninjacat.Characters.Control
             if (!m_Jump)
             {
                 m_Jump = btns.jump;
+
+                if(btns.jump)
+                    audio.PlayOneShot(jumpingSound, .4f);
             }
 
             // toggle crouch
