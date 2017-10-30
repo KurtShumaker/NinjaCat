@@ -31,7 +31,7 @@ namespace Ninjacat.Characters.Control
 		CapsuleCollider m_Capsule;
 		bool m_Crouching;
 		bool m_Interacting;
-        int m_IsAttacking;
+        bool m_IsAttacking;
 
 		GameObject obj_Interact; // object currently being acted on
 
@@ -50,8 +50,11 @@ namespace Ninjacat.Characters.Control
 		int groundedHash;
 		int jumpLegHash;
 		int jumpHash;
-		int groundedStateHash;
         int attackingHash;
+
+        int groundedStateHash;
+        int crouchingStateHash;
+        int attackingStateHash;
 
 
         AnimatorStateInfo stateInfo;
@@ -68,14 +71,19 @@ namespace Ninjacat.Characters.Control
 			m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
 
+            //Parameter hashes
 			forwardHash = Animator.StringToHash ("Forward");
 			turnHash = Animator.StringToHash ("Turn");
 			crouchHash = Animator.StringToHash ("Crouch");
 			groundedHash = Animator.StringToHash ("OnGround");
 			jumpHash = Animator.StringToHash ("Jump");
 			jumpLegHash = Animator.StringToHash ("JumpLeg");
-			groundedStateHash = Animator.StringToHash ("Grounded");
             attackingHash = Animator.StringToHash("Attacking");
+
+            //State machine hashes
+            groundedStateHash = Animator.StringToHash ("Grounded");
+            crouchingStateHash = Animator.StringToHash("Crouching");
+            attackingStateHash = Animator.StringToHash("Attacking");
 
             // from other file
             // get the transform of the main camera
@@ -124,15 +132,15 @@ namespace Ninjacat.Characters.Control
             if (btns.crouch)
                 m_crouch = !m_crouch;
 
-            // pass all parameters to the character control script
+            Attack(btns);
+
+            // pass all to rigidbody movement to be handled and animator to be updated
             Move(m_Move, m_crouch, m_Jump);
             m_Jump = false;
 
             // call interact script
             Interact(btns.interact);
             m_interact = false;
-
-            Attack(btns);
         }
 
 
@@ -217,7 +225,7 @@ namespace Ninjacat.Characters.Control
 			m_Animator.SetFloat(turnHash, m_TurnAmount, 0.1f, Time.deltaTime);
 			m_Animator.SetBool(crouchHash, m_Crouching);
 			m_Animator.SetBool(groundedHash, m_IsGrounded);
-            m_Animator.SetInteger(attackingHash, m_IsAttacking);
+            m_Animator.SetBool(attackingHash, m_IsAttacking);
 
 			if (!m_IsGrounded)
 			{
@@ -272,7 +280,7 @@ namespace Ninjacat.Characters.Control
 		void HandleGroundedMovement(bool crouch, bool jump)
 		{
 			// check whether conditions are right to allow a jump:
-			if (jump && !crouch && stateInfo.shortNameHash == groundedStateHash)
+			if (jump && (stateInfo.shortNameHash == groundedStateHash || stateInfo.shortNameHash == crouchingStateHash))
 			{
 				// jump!
 				m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x, m_JumpPower, m_Rigidbody.velocity.z);
@@ -338,7 +346,7 @@ namespace Ninjacat.Characters.Control
 			if (interact) {
                 GameObject obj;
                 if (!m_Interacting)
-                    obj = UChar.actOnLayer(m_Rigidbody.gameObject, (int)UGen.eLayerMask.NPC, 45.0f, 4.0f);
+                    obj = UChar.actOnLayer(m_Rigidbody.gameObject, (int)UGen.eLayerMask.NPC, 45.0f, 3.0f);
                 else
                     obj = obj_Interact;
 
@@ -369,14 +377,16 @@ namespace Ninjacat.Characters.Control
         {
             GameObject victim;
 
-            if (btns.atkWeak)
+            if (btns.atkWeak && stateInfo.shortNameHash != attackingStateHash)
             {
-                m_IsAttacking = 1;
+                m_IsAttacking = true;
 
-                victim = UChar.actOnLayer(gameObject, (int)UGen.eLayerMask.ENEMY, 45f, 2f);
-                if(victim != null)
+                victim = UChar.actOnLayer(gameObject, (int)UGen.eLayerMask.ENEMY, 45f, .7f);
+                if (victim != null)
                     victim.SendMessage("TakeDamage", 50);
             }
+            else
+                m_IsAttacking = false;
         }
 
 	} // close class

@@ -18,6 +18,8 @@ public class PauseMenu : MonoBehaviour
 
     private void MenuOn ()
     {
+        Debug.Log("GAME PAUSED");
+
         m_TimeScaleRef = Time.timeScale;
         Time.timeScale = 0f;
 
@@ -52,7 +54,7 @@ public class PauseMenu : MonoBehaviour
 #if !MOBILE_INPUT
 	void Update()
 	{
-		if(Input.GetKeyUp(KeyCode.Escape))
+		if(Input.GetKeyDown(KeyCode.Escape))
 		{
 		    m_MenuToggle.isOn = !m_MenuToggle.isOn;
             Cursor.visible = m_MenuToggle.isOn;//force the cursor visible if anythign had hidden it

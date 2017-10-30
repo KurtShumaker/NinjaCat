@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Hero_Health : MonoBehaviour {
 
+    public levelLoader loader;
     public int startingHealth;
     public int currentHealth;
  
@@ -14,12 +15,13 @@ public class Hero_Health : MonoBehaviour {
     public GameObject Ragdoll;
     public float flashSpeed = 5f;
     public Color flashColor = new Color(1f, 0f, 0f, 0.1f);
-
+    
     private bool blocking;
     private bool damaged;
 
     private void Awake()
     {
+
         currentHealth = startingHealth;
 		healthSlider.maxValue = startingHealth;
 		healthSlider.value = currentHealth;
@@ -65,6 +67,7 @@ public class Hero_Health : MonoBehaviour {
 			healthSlider.gameObject.SetActive (false);
             Instantiate(Ragdoll, this.gameObject.transform.position, this.gameObject.transform.rotation);
             Destroy(gameObject);
+            loader.SendMessage("characterDeath");
         }
     }
 }
