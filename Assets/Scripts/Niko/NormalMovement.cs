@@ -31,6 +31,8 @@ namespace Ninjacat.Characters.Control
 		CapsuleCollider m_Capsule;
 		bool m_Crouching;
 		bool m_Interacting;
+        bool m_IsAttacking;
+
 		GameObject obj_Interact; // object currently being acted on
 
         // from other file
@@ -49,8 +51,10 @@ namespace Ninjacat.Characters.Control
 		int jumpLegHash;
 		int jumpHash;
 		int groundedStateHash;
+        int attackingHash;
 
-		AnimatorStateInfo stateInfo;
+
+        AnimatorStateInfo stateInfo;
 
 		void Start()
 		{
@@ -71,6 +75,7 @@ namespace Ninjacat.Characters.Control
 			jumpHash = Animator.StringToHash ("Jump");
 			jumpLegHash = Animator.StringToHash ("JumpLeg");
 			groundedStateHash = Animator.StringToHash ("Grounded");
+            attackingHash = Animator.StringToHash("Attacking");
 
             // from other file
             // get the transform of the main camera
@@ -126,6 +131,8 @@ namespace Ninjacat.Characters.Control
             // call interact script
             Interact(m_interact);
             m_interact = false;
+
+            Attack(btns);
         }
 
 
@@ -210,21 +217,12 @@ namespace Ninjacat.Characters.Control
 			m_Animator.SetFloat(turnHash, m_TurnAmount, 0.1f, Time.deltaTime);
 			m_Animator.SetBool(crouchHash, m_Crouching);
 			m_Animator.SetBool(groundedHash, m_IsGrounded);
+            m_Animator.SetBool(attackingHash, m_IsAttacking);
+
 			if (!m_IsGrounded)
 			{
 				m_Animator.SetFloat(jumpHash, m_Rigidbody.velocity.y);
 			}
-
-			/* prior animator.sets using Strings, now replaced with HashIDs
-				m_Animator.SetFloat("Forward", m_ForwardAmount, 0.1f, Time.deltaTime);
-				m_Animator.SetFloat("Turn", m_TurnAmount, 0.1f, Time.deltaTime);
-				m_Animator.SetBool("Crouch", m_Crouching);
-				m_Animator.SetBool("OnGround", m_IsGrounded);
-				if (!m_IsGrounded)
-				{
-					m_Animator.SetFloat("Jump", m_Rigidbody.velocity.y);
-				}
-			*/
 
 			// calculate which leg is behind, so as to leave that leg trailing in the jump animation
 			// (This code is reliant on the specific run cycle offset in our animations,
@@ -363,6 +361,13 @@ namespace Ninjacat.Characters.Control
 		private void EndInteract() {
 			m_Interacting = false;
 		}
+
+
+        public void Attack(ButtonPresses btns)
+        {
+            if (btns.atkWeak)
+                ;
+        }
 
 	} // close class
 } // close namespace
