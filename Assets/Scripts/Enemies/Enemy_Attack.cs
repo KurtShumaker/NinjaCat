@@ -6,6 +6,12 @@ public class Enemy_Attack : MonoBehaviour {
 
     public int m_damagePerHit; //could be changed to become weapon specific
     public float attackFrequency = 3.0f;
+    private float startingFreq;
+
+    private void Awake()
+    {
+        startingFreq = attackFrequency;
+    }
 
     private void OnCollisionStay(Collision collision)
     {
@@ -17,7 +23,7 @@ public class Enemy_Attack : MonoBehaviour {
             {
                 Hero_Health heroHealth = collision.collider.GetComponent<Hero_Health>();   // checks to see if the object attacked has a EnemyHealth script
                 heroHealth.TakeDamage(m_damagePerHit);
-                attackFrequency = 3.0f;
+                attackFrequency = startingFreq;
             }
         }
     }

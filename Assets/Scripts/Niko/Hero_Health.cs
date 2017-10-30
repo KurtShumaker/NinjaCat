@@ -21,7 +21,9 @@ public class Hero_Health : MonoBehaviour {
     private void Awake()
     {
         currentHealth = startingHealth;
-    }
+		healthSlider.maxValue = startingHealth;
+		healthSlider.value = currentHealth;
+	}
 
     private void Update()
     {
@@ -60,6 +62,7 @@ public class Hero_Health : MonoBehaviour {
         }
         if (currentHealth < 1)
         {
+			healthSlider.gameObject.SetActive (false);
             Instantiate(Ragdoll, this.gameObject.transform.position, this.gameObject.transform.rotation);
             Destroy(gameObject);
         }

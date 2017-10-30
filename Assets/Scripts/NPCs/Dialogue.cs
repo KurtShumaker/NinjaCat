@@ -16,7 +16,9 @@ namespace Assets.Scripts.Character
 
         private Text DialogueBox;
         private Image DialogueBG;
+        private Image DialoguePortrait;
         [SerializeField] private TextAsset dialogueFile;
+        [SerializeField] private Sprite portrait;
         private List<string> lines;       // the separate lines of dialogue stored in text doc
         private List<string> linesRepeat; // lines of dialogue for the character to repeat after lines are finished
         private UInt16 lineNum;           // current line number for character to say
@@ -34,6 +36,7 @@ namespace Assets.Scripts.Character
             // Find dialogue box objects
             DialogueBox = GameObject.Find("DialogueBox").GetComponent<Text>();
             DialogueBG = GameObject.Find("DialogueBG").GetComponent<Image>();
+            DialoguePortrait = GameObject.Find("DialoguePortrait").GetComponent<Image>();
 
             // set interaction state to false
             bInteracting = false;
@@ -82,6 +85,8 @@ namespace Assets.Scripts.Character
             DialogueBox.text = "";
             DialogueBox.enabled = true;
             DialogueBG.enabled = true;
+            DialoguePortrait.sprite = portrait;
+            DialoguePortrait.enabled = true;
             obj.SendMessage("ConfirmInteraction", this.gameObject);
             bInteracting = true;
         }
@@ -91,6 +96,7 @@ namespace Assets.Scripts.Character
         /// </summary>
         /// <param name="obj">The character that started the dialogue.</param>
         private void closeDialogueBox(GameObject obj) {
+            DialoguePortrait.enabled = false;
             DialogueBG.enabled = false;
             DialogueBox.enabled = false;
             DialogueBox.text = "";
