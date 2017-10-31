@@ -126,7 +126,7 @@ namespace Ninjacat.Characters.Control
             if (Input.GetAxis("AttackStrong") > 0.5f)
                 buttons.atkStrong = true;
 
-            if (Input.GetAxis("Block") > 0.5f)
+            if (Input.GetAxis("Block") > 0.5f || Input.GetButton("Block"))
                 buttons.block = true;
 
             if (Input.GetAxis("Items13") < -0.5f) { 

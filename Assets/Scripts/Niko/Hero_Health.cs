@@ -29,7 +29,7 @@ public class Hero_Health : MonoBehaviour {
 
     private void Update()
     {
-        if(Input.GetButton("Block"))
+        if (Input.GetButton("Block") || Input.GetAxis("Block") > .5f)
         {
             blocking = true;
         }

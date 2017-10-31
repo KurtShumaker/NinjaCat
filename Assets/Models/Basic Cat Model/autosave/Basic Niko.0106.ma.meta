@@ -1,0 +1,193 @@
+fileFormatVersion: 2
+guid: a53da2cb013313847b3b9a9ed509efbe
+timeCreated: 1509404577
+licenseType: Free
+ModelImporter:
+  serializedVersion: 21
+  fileIDToRecycleName:
+    100000: ARM_GROUP
+    100002: //RootNode
+    100004: ELBOW_JT
+    100006: FINGERS_JT
+    100008: group
+    100010: imagePlane1
+    100012: imagePlane2
+    100014: L_ANKLE_JT
+    100016: L_ANKLE_TO_HIP
+    100018: L_FOOT_JT
+    100020: L_FootCon
+    100022: L_HIP_JT
+    100024: L_KNEE_JT
+    100026: L_LEG_GROUP
+    100028: L_TOE_JT
+    100030: MIDHAND_JT
+    100032: pasted__pCube17
+    100034: pCube10
+    100036: pCube12
+    100038: pCube13
+    100040: pCube16
+    100042: pCube18
+    100044: pCube2
+    100046: pCube4
+    100048: pCube7
+    100050: pCylinder2
+    100052: pCylinder4
+    100054: pCylinder5
+    100056: pCylinder6
+    100058: pCylinder7
+    100060: pointLight1
+    100062: polySurface1
+    100064: polySurface17
+    100066: polySurface20
+    100068: polySurface4
+    100070: polySurface5
+    100072: polySurface8
+    100074: polySurface9
+    100076: R_ANKLE_JT
+    100078: R_ANKLE_TO_HIP
+    100080: R_FOOT_JT
+    100082: R_FootCon
+    100084: R_HIP_JT
+    100086: R_KNEE_JT
+    100088: R_LEG_GROUP1
+    100090: R_TOE_JT
+    100092: SHOULDER_JT
+    100094: THUMB_JT
+    100096: THUMBEND_JT
+    100098: transform1
+    100100: transform2
+    100102: WRIST_JT
+    100104: WRIST_TO_SHOULDER
+    400000: ARM_GROUP
+    400002: //RootNode
+    400004: ELBOW_JT
+    400006: FINGERS_JT
+    400008: group
+    400010: imagePlane1
+    400012: imagePlane2
+    400014: L_ANKLE_JT
+    400016: L_ANKLE_TO_HIP
+    400018: L_FOOT_JT
+    400020: L_FootCon
+    400022: L_HIP_JT
+    400024: L_KNEE_JT
+    400026: L_LEG_GROUP
+    400028: L_TOE_JT
+    400030: MIDHAND_JT
+    400032: pasted__pCube17
+    400034: pCube10
+    400036: pCube12
+    400038: pCube13
+    400040: pCube16
+    400042: pCube18
+    400044: pCube2
+    400046: pCube4
+    400048: pCube7
+    400050: pCylinder2
+    400052: pCylinder4
+    400054: pCylinder5
+    400056: pCylinder6
+    400058: pCylinder7
+    400060: pointLight1
+    400062: polySurface1
+    400064: polySurface17
+    400066: polySurface20
+    400068: polySurface4
+    400070: polySurface5
+    400072: polySurface8
+    400074: polySurface9
+    400076: R_ANKLE_JT
+    400078: R_ANKLE_TO_HIP
+    400080: R_FOOT_JT
+    400082: R_FootCon
+    400084: R_HIP_JT
+    400086: R_KNEE_JT
+    400088: R_LEG_GROUP1
+    400090: R_TOE_JT
+    400092: SHOULDER_JT
+    400094: THUMB_JT
+    400096: THUMBEND_JT
+    400098: transform1
+    400100: transform2
+    400102: WRIST_JT
+    400104: WRIST_TO_SHOULDER
+    2300000: pCylinder7
+    3300000: pCylinder7
+    4300000: pCylinder7
+    9500000: //RootNode
+    10800000: pointLight1
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

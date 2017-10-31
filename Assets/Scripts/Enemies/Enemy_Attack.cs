@@ -19,7 +19,7 @@ public class Enemy_Attack : MonoBehaviour {
 	{
 		if (collision.rigidbody && collision.gameObject.tag == "Player")
 		{
-			anim.SetBool ("Attacking", true);
+			anim.SetBool ("Attack", true);
 		}
 	}
 
@@ -31,8 +31,8 @@ public class Enemy_Attack : MonoBehaviour {
             Debug.Log("Colliding with rigidbody");
             if (attackFrequency <= 0.0f)
             {
-				if (!anim.GetBool ("Attacking"))
-					anim.SetBool ("Attacking", true);
+				if (!anim.GetBool ("Attack"))
+					anim.SetBool ("Attack", true);
 				
                 Hero_Health heroHealth = collision.collider.GetComponent<Hero_Health>();   // checks to see if the object attacked has a EnemyHealth script
                 heroHealth.TakeDamage(m_damagePerHit);
@@ -43,6 +43,6 @@ public class Enemy_Attack : MonoBehaviour {
 
 	private void OnCollisionExit()
 	{
-		anim.SetBool ("Attacking", false);
+		anim.SetBool ("Attack", false);
 	}
 }

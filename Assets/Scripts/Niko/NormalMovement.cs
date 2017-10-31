@@ -85,8 +85,8 @@ namespace Ninjacat.Characters.Control
 			groundedHash = Animator.StringToHash ("OnGround");
 			jumpHash = Animator.StringToHash ("Jump");
 			jumpLegHash = Animator.StringToHash ("JumpLeg");
-            attackingHash = Animator.StringToHash("Attacking");
-            blockingHash = Animator.StringToHash("Blocking");
+            attackingHash = Animator.StringToHash("Attack");
+            blockingHash = Animator.StringToHash("Block");
 
             //State machine hashes
             groundedStateHash = Animator.StringToHash ("Grounded");
@@ -169,7 +169,10 @@ namespace Ninjacat.Characters.Control
 			CheckGroundStatus();
 			move = Vector3.ProjectOnPlane(move, m_GroundNormal);
 			m_TurnAmount = Mathf.Atan2(move.x, move.z);
-			m_ForwardAmount = move.z;
+            if (!m_IsBlocking)
+                m_ForwardAmount = move.z;
+            else
+                m_ForwardAmount = move.z / 2f;
 
 			ApplyExtraTurnRotation();
 
@@ -259,17 +262,17 @@ namespace Ninjacat.Characters.Control
 				m_Animator.SetFloat (jumpLegHash, jumpLeg);
 			}
 
-			// the anim speed multiplier allows the overall speed of walking/running to be tweaked in the inspector,
-			// which affects the movement speed because of the root motion.
-			if (m_IsGrounded && move.magnitude > 0)
-			{
-				m_Animator.speed = m_AnimSpeedMultiplier;
-			}
-			else
-			{
-				// don't use that while airborne
-				m_Animator.speed = 1;
-			}
+            // the anim speed multiplier allows the overall speed of walking/running to be tweaked in the inspector,
+            // which affects the movement speed because of the root motion.
+            if (m_IsGrounded && move.magnitude > 0)
+            {
+                m_Animator.speed = m_AnimSpeedMultiplier;
+            }
+            else
+            {
+                // don't use that while airborne
+                m_Animator.speed = 1;
+            }
 		}
 
 
@@ -322,7 +325,8 @@ namespace Ninjacat.Characters.Control
 
 				// we preserve the existing y part of the current velocity.
 				v.y = m_Rigidbody.velocity.y;
-				m_Rigidbody.velocity = v;
+
+                m_Rigidbody.velocity = v;
 			}
 		}
 

@@ -21,9 +21,11 @@ public class playOtherSong : MonoBehaviour {
         {
             audio.clip = song1;
             audio.Play();
+            audio.volume = .4f;
             yield return new WaitForSeconds(audio.clip.length);
             audio.clip = song2;
             audio.Play();
+            audio.volume = .8f;
             yield return new WaitForSeconds(audio.clip.length);
         }
     }
