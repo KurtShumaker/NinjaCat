@@ -400,7 +400,7 @@ namespace Ninjacat.Characters.Control
             else
                 m_IsBlocking = false;
 
-            if (btns.atkWeak && stateInfo.shortNameHash != attackingStateHash)
+            if (btns.atkWeak)
             {
                 m_IsAttacking = true;
 
