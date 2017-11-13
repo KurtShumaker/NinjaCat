@@ -241,8 +241,9 @@ namespace Ninjacat.Characters.Control
 			m_Animator.SetFloat(turnHash, m_TurnAmount, 0.1f, Time.deltaTime);
 			m_Animator.SetBool(crouchHash, m_Crouching);
 			m_Animator.SetBool(groundedHash, m_IsGrounded);
-            m_Animator.SetBool(attackingHash, m_IsAttacking);
-            m_Animator.SetBool(blockingHash, m_IsBlocking);
+            //COMMENTS BELOW DISABLE ATTACKING AND BLOCKING ANIMATIONS FROM HAPPENING
+            //m_Animator.SetBool(attackingHash, m_IsAttacking);
+            //m_Animator.SetBool(blockingHash, m_IsBlocking);
 
 			if (!m_IsGrounded)
 			{
