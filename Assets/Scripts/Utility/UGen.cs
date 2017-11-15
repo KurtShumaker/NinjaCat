@@ -63,6 +63,7 @@ namespace Ninjacat.Utility {
 		// ==============
 
 		static private float currentSpeed = NORMAL_SPEED;
+        static private bool bPaused = false;
 
 		// =========================================
 		// * PUBLIC METHODS FOR CHANGING GAMESPEED *
@@ -75,6 +76,7 @@ namespace Ninjacat.Utility {
 		static public void pause()
 		{
 			Time.timeScale = 0.0f;
+            bPaused = true;
 		}
 
 		/// <summary>
@@ -83,6 +85,7 @@ namespace Ninjacat.Utility {
 		static public void resume()
 		{
 			Time.timeScale = currentSpeed;
+            bPaused = false;
 		}
 
 		/// <summary>
@@ -91,6 +94,7 @@ namespace Ninjacat.Utility {
 		static public void normalSpeed() {
 			Time.timeScale = NORMAL_SPEED;
 			currentSpeed = NORMAL_SPEED;
+            bPaused = false;
 		}
 
 		/// <summary>
@@ -98,11 +102,20 @@ namespace Ninjacat.Utility {
 		/// </summary>
 		/// <param name="speed">Value to set timescale.</param>
 		static public void setSpeed(float speed) {
-			if (Time.timeScale != 0.0f)
+			if (!bPaused)
 				Time.timeScale = speed;
 
 			currentSpeed = speed;
+            bPaused = false;
 		}
+
+        /// <summary>
+        /// Returns true if the game is paused.
+        /// </summary>
+        /// <returns>Pause state.</returns>
+        static public bool isPaused() {
+            return bPaused;
+        }
 
         // ========================
         // * OTHER PUBLIC METHODS *

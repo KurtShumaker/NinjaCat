@@ -156,6 +156,20 @@ namespace Ninjacat.Characters.Control
             m_interact = false;
         }
 
+        public void PauseButton(ButtonPresses btns) {
+            // pause or unpause
+            if (btns.pause)
+            {
+                if (UGen.isPaused())
+                {
+                    UGen.resume();
+                    Debug.LogWarning("WOLOLO");
+                }
+                else
+                    UGen.pause();
+            }
+        }
+
 
 		public void Move(Vector3 move, bool crouch, bool jump)
 		{

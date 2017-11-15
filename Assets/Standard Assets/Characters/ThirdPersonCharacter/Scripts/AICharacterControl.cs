@@ -17,20 +17,26 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             agent = GetComponentInChildren<UnityEngine.AI.NavMeshAgent>();
             character = GetComponent<ThirdPersonCharacter>();
 
-	        agent.updateRotation = false;
-	        agent.updatePosition = true;
+            if (agent != null && agent.enabled)
+            {
+                agent.updateRotation = false;
+                agent.updatePosition = true;
+            }
         }
 			
 
         private void Update()
         {
-            if (target != null)
-                agent.SetDestination(target.position);
+            if (agent != null && agent.enabled)
+            {
+                if (target != null)
+                    agent.SetDestination(target.position);
 
-            if (agent.remainingDistance > agent.stoppingDistance)
-                character.Move(agent.desiredVelocity, false, false);
-            else
-                character.Move(Vector3.zero, false, false);
+                if (agent.remainingDistance > agent.stoppingDistance)
+                    character.Move(agent.desiredVelocity, false, false);
+                else
+                    character.Move(Vector3.zero, false, false);
+            }
         }
     }
 }

@@ -79,9 +79,10 @@ namespace Ninjacat.Characters.Control
         // * PROPERTIES *
         // ==============
 
-        private ControlFunc controlScheme; // current control scheme
-        private ButtonPresses buttons;     // current state of each button press (true/false)
-		private NormalMovement normScheme; // A reference to the NormalMovement on the object
+        private ControlFunc controlScheme;      // current control scheme
+        private ControlFunc controlSchemePause; // current control scheme's pause button reaction
+        private ButtonPresses buttons;          // current state of each button press (true/false)
+		private NormalMovement normScheme;      // A reference to the NormalMovement on the object
 
 
 
@@ -101,6 +102,7 @@ namespace Ninjacat.Characters.Control
 
             // initialize controlScheme to normal controls
             controlScheme = normScheme.Interface;
+            controlSchemePause = normScheme.PauseButton;
 		}
 
 
@@ -161,6 +163,9 @@ namespace Ninjacat.Characters.Control
 
             if (Input.GetButtonDown("Walk"))
                 buttons.walk = true;
+
+            controlSchemePause(buttons);
+            buttons.pause = false;
 		}
 
 
