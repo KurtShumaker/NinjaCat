@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Ninjacat.Utility;
 
 public class levelLoader : MonoBehaviour {
 
@@ -17,6 +18,7 @@ public class levelLoader : MonoBehaviour {
     IEnumerator characterDeath()
     {
         Debug.Log("Reloading scene after a few seconds...");
+        UGen.normalSpeed();
         yield return new WaitForSeconds(5.0f);
         SceneManager.LoadScene(0);
     }

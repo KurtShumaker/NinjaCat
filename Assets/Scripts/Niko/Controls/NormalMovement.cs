@@ -6,7 +6,7 @@ namespace Ninjacat.Characters.Control
 	[RequireComponent(typeof(Rigidbody))]
 	[RequireComponent(typeof(CapsuleCollider))]
 	[RequireComponent(typeof(Animator))]
-	public class NormalMovement : MonoBehaviour
+	public class NormalMovement : MonoBehaviour, IControlScheme
 	{
 		[SerializeField] float m_MovingTurnSpeed = 360;
 		[SerializeField] float m_StationaryTurnSpeed = 180;
@@ -114,10 +114,10 @@ namespace Ninjacat.Characters.Control
         /// Default movement control scheme.
         /// </summary>
         /// <param name="btns">The buttons that have been pressed since last update.</param>
-        public void Interface(ButtonPresses btns) {
+        public void controlInterface(ButtonPresses btns) {
             // read inputs
-            float h = Input.GetAxis("Horizontal");
-            float v =Input.GetAxis("Vertical");
+            float h = btns.hori;
+            float v = btns.vert;
 
             // calculate move direction to pass to character
             if (m_Cam != null)
@@ -163,7 +163,6 @@ namespace Ninjacat.Characters.Control
                 if (UGen.isPaused())
                 {
                     UGen.resume();
-                    Debug.LogWarning("WOLOLO");
                 }
                 else
                     UGen.pause();

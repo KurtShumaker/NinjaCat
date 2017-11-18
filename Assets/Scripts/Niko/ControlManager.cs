@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
+using Ninjacat.Utility;
 
 namespace Ninjacat.Characters.Control
 {
@@ -12,6 +13,13 @@ namespace Ninjacat.Characters.Control
     /// List of button presses since last update.
     /// </summary>
     public class ButtonPresses {
+        // joysticks
+        public float hori;
+        public float vert;
+        public float camHori;
+        public float camVert;
+
+        // buttons
         public bool jump;
         public bool crouch;
         public bool dodge;
@@ -30,10 +38,19 @@ namespace Ninjacat.Characters.Control
         public bool walk;
 
         /// <summary>
-        /// Sets all button presses to the given value.
+        /// Sets all button presses to the given value and kills joystick values if val is false.
         /// </summary>
         /// <param name="val">The value to set all button presses.</param>
         public void setAll(bool val) {
+            // Kill joystick input
+            if (val == false) {
+                hori = 0.0f;
+                vert = 0.0f;
+                camHori = 0.0f;
+                camVert = 0.0f;
+            }
+
+            // set buttons
             jump = val;
             crouch = val;
             dodge = val;
@@ -55,15 +72,25 @@ namespace Ninjacat.Characters.Control
 
 
 
-    // =========================================
-    // * DELEGATE FOR CONTROL SCHEME FUNCTIONS *
-    // =========================================
+    // ==================================
+    // * INTERFACES FOR CONTROL CLASSES *
+    // ==================================
 
     /// <summary>
-    /// Delegate for Control Scheme Functions.
+    /// Interface for ControlScheme Classes.
     /// </summary>
-    /// <param name="btns">The list of buttons that have been pressed since last update.</param>
-    public delegate void ControlFunc(ButtonPresses btns);
+    interface IControlScheme {
+        void controlInterface(ButtonPresses btns);
+    }
+
+    /// <summary>
+    /// Interface for Menu Classes.
+    /// </summary>
+    interface IMenuControl {
+        void controlInterface(ButtonPresses btns);
+        void initMenu();
+        void exitMenu();
+    }
 
 
 
@@ -73,16 +100,20 @@ namespace Ninjacat.Characters.Control
 
     [RequireComponent(typeof(ButtonPresses))]
     [RequireComponent(typeof(NormalMovement))]
-	public class ControlSchemes : MonoBehaviour
+    [RequireComponent(typeof(PauseMenu))]
+    [RequireComponent(typeof(QuickMenu))]
+	public class ControlManager : MonoBehaviour
 	{
         // ==============
         // * PROPERTIES *
         // ==============
 
-        private ControlFunc controlScheme;      // current control scheme
-        private ControlFunc controlSchemePause; // current control scheme's pause button reaction
-        private ButtonPresses buttons;          // current state of each button press (true/false)
-		private NormalMovement normScheme;      // A reference to the NormalMovement on the object
+        private IControlScheme controlScheme;  // current control scheme
+
+        private ButtonPresses buttons;         // current state of each button press (true/false)
+		private NormalMovement normalMovement; // A reference to the NormalMovement on the object
+        private PauseMenu pauseMenu;           // Pause Menu object
+        private QuickMenu quickMenu;           // Quick Menu object
 
 
 
@@ -95,21 +126,29 @@ namespace Ninjacat.Characters.Control
 		{
             // get class instances
             buttons = new ButtonPresses();
-            normScheme = GetComponent<NormalMovement>();
+            normalMovement = GetComponent<NormalMovement>();
+            pauseMenu = GetComponent<PauseMenu>();
+            quickMenu = GetComponent<QuickMenu>();
 
             // initialize button presses to false
             buttons.setAll(false);
 
-            // initialize controlScheme to normal controls
-            controlScheme = normScheme.Interface;
-            controlSchemePause = normScheme.PauseButton;
+            // initialize controlScheme to default
+            controlScheme = normalMovement;
 		}
 
 
 
-        // Get Button Input
+        // Get Input Information and Deal with Menus
 		private void Update()
 		{
+            // Joysticks
+            buttons.hori = Input.GetAxis("Horizontal");
+            buttons.vert = Input.GetAxis("Vertical");
+            buttons.camHori = Input.GetAxis("CamHori");
+            buttons.camVert = Input.GetAxis("CamVert");
+
+            // Buttons
             if (Input.GetButtonDown("Jump"))
                 buttons.jump = true;
 
@@ -164,18 +203,46 @@ namespace Ninjacat.Characters.Control
             if (Input.GetButtonDown("Walk"))
                 buttons.walk = true;
 
-            controlSchemePause(buttons);
-            buttons.pause = false;
+
+
+            // Menus
+
+            // If paused, run pause controls
+            if (UGen.isPaused()) {
+                pauseMenu.controlInterface(buttons);
+                buttons.setAll(false);
+            }
+            else { // If not paused
+                // If in quick menu, run quick menu controls
+                if (quickMenu.isOpen()) {
+                    quickMenu.controlInterface(buttons);
+                    buttons.setAll(false);
+                }
+                else if (buttons.qMenu) { // If not in quick menu, check the quick menu button
+                    quickMenu.initMenu();
+                    buttons.setAll(false);
+                }
+
+                // If pause button has been pressed, pause the game
+                if (buttons.pause) {
+                    pauseMenu.initMenu();
+                    buttons.setAll(false);
+                }
+            }
 		}
 
 
 
-		// Respond to Button Input
-		private void FixedUpdate()
-		{
-            controlScheme(buttons);
+		// Run regular controls if not paused
+		private void FixedUpdate() {
+            // If not in quick menu, run regular controls
+            if (quickMenu.isOpen()) {
+                buttons.setAll(false);
+            }
+
+            controlScheme.controlInterface(buttons);
             buttons.setAll(false);
-		}
+        }
 
 	} // close ControlSchemes
 } // close namespace
