@@ -5,10 +5,11 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using Ninjacat.Utility;
 
 namespace Assets.Scripts.Character
 {
-	class Dialogue : MonoBehaviour
+	class Dialogue : IInteract
 	{
         // ======================
         // * PRIVATE PROPERTIES *
@@ -60,13 +61,15 @@ namespace Assets.Scripts.Character
         // * MESSAGE HANDLER *
         // ===================
 
-        public void handleDialogue(GameObject obj) {
+        override protected void handleInteraction(GameObject obj) {
 			if (!bInteracting) {
-                openDialogueBox(obj);
+                confirmInteraction(obj);
+                openDialogueBox();
                 printDialogue();
 			}
 			else {
-				closeDialogueBox(obj);
+				closeDialogueBox();
+                endInteraction(obj);
 			}
 
 		}
@@ -78,29 +81,25 @@ namespace Assets.Scripts.Character
         // ====================================
 
         /// <summary>
-        /// Open the dialogue box image and send confirmation that the NPC received dialogue request.
+        /// Open the dialogue box image.
         /// </summary>
-        /// <param name="obj">The object that sent the dialogue request.</param>
-        private void openDialogueBox(GameObject obj) {
+        private void openDialogueBox() {
             DialogueBox.text = "";
             DialogueBox.enabled = true;
             DialogueBG.enabled = true;
             DialoguePortrait.sprite = portrait;
             DialoguePortrait.enabled = true;
-            obj.SendMessage("ConfirmInteraction", this.gameObject);
             bInteracting = true;
         }
 
         /// <summary>
-        /// Close the dialogue box image and send end dialogue message to character.
+        /// Close the dialogue box image.
         /// </summary>
-        /// <param name="obj">The character that started the dialogue.</param>
-        private void closeDialogueBox(GameObject obj) {
+        private void closeDialogueBox() {
             DialoguePortrait.enabled = false;
             DialogueBG.enabled = false;
             DialogueBox.enabled = false;
             DialogueBox.text = "";
-            obj.SendMessage("EndInteraction", obj);
             bInteracting = false;
         }
 

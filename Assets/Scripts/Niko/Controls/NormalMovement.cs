@@ -377,13 +377,39 @@ namespace Ninjacat.Characters.Control
 		public void Interact(bool interact) {
 			if (interact) {
                 GameObject obj;
-                if (!m_Interacting)
-                    obj = UChar.actOnLayer(m_Rigidbody.gameObject, (int)UGen.eLayerMask.NPC, 45.0f, 3.0f);
-                else
+                GameObject objDia;
+                GameObject objInt;
+                UGen.PseudoTransform charTrans = UGen.setPseudo(this.gameObject.transform);
+                float score;
+
+                if (!m_Interacting) {
+                    // get an object each of NPC and TOUCH_OBJECT type
+                    objDia = UChar.actOnLayer(this.gameObject, (int)UGen.eLayerMask.NPC, 45.0f, 3.0f);
+                    objInt = UChar.actOnLayer(this.gameObject, (int)UGen.eLayerMask.TOUCH_OBJECT, 45.0f, 1.0f);
+
+                    // compare to see which is the likely target
+                    if (objDia != null)
+                    { // if objDia is not null
+                        if (objInt != null)
+                        { // and objInt is not null, compare target scores
+                            score = UChar.aimCenterScore(charTrans, objDia.GetComponent<Collider>());
+
+                            if (UChar.aimCenterScore(charTrans, objInt.GetComponent<Collider>()) > score) // if interaction object is higher, set it as the object
+                                obj = objInt;
+                            else // dialogue object had higher score; set it as the object
+                                obj = objDia;
+                        }
+                        else // no interactable object nearby. set NPC as the object
+                            obj = objDia;
+                    }
+                    else // objDia is null. set interactable object as the object
+                        obj = objInt;
+                }
+                else  // already interacting with an object
                     obj = obj_Interact;
 
 				if (obj != null) {
-						obj.SendMessage("handleDialogue", m_Rigidbody.gameObject);
+						obj.SendMessage("handleInteraction", this.gameObject);
 				}
 			}
 		}

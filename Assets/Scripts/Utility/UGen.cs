@@ -5,23 +5,26 @@ using UnityEngine;
 namespace Ninjacat.Utility {
 
 	/// <summary>
-	/// Class containing general game utility functions.
+	/// General utility class.
 	/// </summary>
 	static public class UGen {
 
-        // ===========
-        // * STRUCTS *
-        // ===========
+        // ==========================
+        // * PSEUDOTRANSFORM OBJECT *
+        // ==========================
 
         /// <summary>
         /// Public struct similar to GameObject.Transform.
         /// </summary>
         public struct PseudoTransform {
+            public GameObject gameObject;
             public Quaternion rotation;
             public Vector3 position;
             public Vector3 scale;
             public Vector3 forward;
         }
+
+
 
         /// <summary>
         /// Returns a PseudoTransform whose properties are equal to those of the passed Transform.
@@ -30,6 +33,7 @@ namespace Ninjacat.Utility {
         /// <returns>PseudoTransform similar to the Transform.</returns>
         public static PseudoTransform setPseudo(Transform t) {
             PseudoTransform ret;
+            ret.gameObject = t.gameObject;
             ret.rotation = t.rotation;
             ret.position = t.position;
             ret.scale = t.localScale;
@@ -37,6 +41,10 @@ namespace Ninjacat.Utility {
 
             return ret;
         }
+
+
+
+
 
 		// =============
 		// * CONSTANTS *
@@ -58,14 +66,23 @@ namespace Ninjacat.Utility {
 			TOUCH_OBJECT = 2048 // 2 ^ 11
 		};
 
-		// ==============
-		// * PROPERTIES *
-		// ==============
+
+
+
+
+
+		// ======================
+		// * PRIVATE PROPERTIES *
+		// ======================
 
 		static private float currentSpeed = NORMAL_SPEED;
         static private bool bPaused = false;
 
-		// =========================================
+
+
+
+
+        // =========================================
 		// * PUBLIC METHODS FOR CHANGING GAMESPEED *
 		// =========================================
 
@@ -79,6 +96,8 @@ namespace Ninjacat.Utility {
             bPaused = true;
 		}
 
+
+
 		/// <summary>
 		/// Resumes the game by setting the timescale back to normal.
 		/// </summary>
@@ -88,6 +107,8 @@ namespace Ninjacat.Utility {
             bPaused = false;
 		}
 
+
+
 		/// <summary>
 		/// Returns the timescale to the normal game speed.
 		/// </summary>
@@ -96,6 +117,8 @@ namespace Ninjacat.Utility {
 			currentSpeed = NORMAL_SPEED;
             bPaused = false;
 		}
+
+
 
 		/// <summary>
 		/// Sets the timescale to the given speed. Does not resume if game is paused.
@@ -109,6 +132,8 @@ namespace Ninjacat.Utility {
             bPaused = false;
 		}
 
+
+
         /// <summary>
         /// Returns true if the game is paused.
         /// </summary>
@@ -117,9 +142,13 @@ namespace Ninjacat.Utility {
             return bPaused;
         }
 
-        // ========================
-        // * OTHER PUBLIC METHODS *
-        // ========================
+
+
+
+
+        // ==================================================
+        // * PUBLIC METHODS FOR GETTING POINTS ON COLLIDERS *
+        // ==================================================
 
         /// <summary>
         /// Returns the center of an object's collider.
@@ -129,6 +158,29 @@ namespace Ninjacat.Utility {
         static public Vector3 getCenter(GameObject obj) {
             return obj.GetComponent<Collider>().bounds.center;
         }
+
+
+        /// <summary>
+        /// Returns the top-center of an object's collider.
+        /// </summary>
+        /// <param name="obj">The object whose top-center is to be returned.</param>
+        /// <returns>The object's top-center.</returns>
+        static public Vector3 getTop(GameObject obj) {
+            return new Vector3(getCenter(obj).x, getCenter(obj).y + obj.GetComponent<Collider>().bounds.extents.y, getCenter(obj).z);
+        }
+
+
+        /// <summary>
+        /// Returns the bottom-center of an object's collider.
+        /// </summary>
+        /// <param name="obj">The object whose bottom-center is to be returned.</param>
+        /// <returns>The object's bottom-center.</returns>
+        static public Vector3 getBottom(GameObject obj)
+        {
+            return new Vector3(getCenter(obj).x, getCenter(obj).y - obj.GetComponent<Collider>().bounds.extents.y, getCenter(obj).z);
+        }
+
+
 
         /// <summary>
         /// Returns the point on an object's collider that is closest to the passed location.
@@ -140,6 +192,8 @@ namespace Ninjacat.Utility {
         static public Vector3 getClosest(GameObject obj, Vector3 pt) {
             return obj.GetComponent<Collider>().ClosestPoint(pt);
         }
+
+
 
 	} // close class
 } // close namespace

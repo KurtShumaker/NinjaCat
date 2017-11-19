@@ -38,18 +38,10 @@ namespace Ninjacat.Characters.Control
         public bool walk;
 
         /// <summary>
-        /// Sets all button presses to the given value and kills joystick values if val is false.
+        /// Sets all button presses to the given value.
         /// </summary>
         /// <param name="val">The value to set all button presses.</param>
-        public void setAll(bool val) {
-            // Kill joystick input
-            if (val == false) {
-                hori = 0.0f;
-                vert = 0.0f;
-                camHori = 0.0f;
-                camVert = 0.0f;
-            }
-
+        public void setPresses(bool val) {
             // set buttons
             jump = val;
             crouch = val;
@@ -57,7 +49,7 @@ namespace Ninjacat.Characters.Control
             interact = val;
             atkWeak = val;
             atkStrong = val;
-            block = val;
+            //block = val; // BLOCK IS HELD DOWN
             item1 = val;
             item2 = val;
             item3 = val;
@@ -66,7 +58,23 @@ namespace Ninjacat.Characters.Control
             lockOn = val;
             pause = val;
             showMap = val;
+            //walk = val; // WALK IS HELD DOWN
+        }
+
+        /// <summary>
+        /// Sets all persistent controls to the given value.
+        /// </summary>
+        /// <param name="val"></param>
+        public void setPersistent(bool val) {
+            block = val;
             walk = val;
+
+            if (val == false) {
+                hori = 0.0f;
+                vert = 0.0f;
+                camHori = 0.0f;
+                camVert = 0.0f;
+            }
         }
     } // close ButtonPresses
 
@@ -130,8 +138,10 @@ namespace Ninjacat.Characters.Control
             pauseMenu = GetComponent<PauseMenu>();
             quickMenu = GetComponent<QuickMenu>();
 
-            // initialize button presses to false
-            buttons.setAll(false);
+            // initialize button presses and joysticks to false
+            buttons.setPresses(false);
+            buttons.setPersistent(false);
+
 
             // initialize controlScheme to default
             controlScheme = normalMovement;
@@ -169,6 +179,8 @@ namespace Ninjacat.Characters.Control
 
             if (Input.GetAxis("Block") > 0.5f || Input.GetButton("Block"))
                 buttons.block = true;
+            else
+                buttons.block = false;
 
             if (Input.GetAxis("Items13") < -0.5f) { 
                 buttons.item1 = true;
@@ -202,6 +214,8 @@ namespace Ninjacat.Characters.Control
 
             if (Input.GetButtonDown("Walk"))
                 buttons.walk = true;
+            else
+                buttons.walk = false;
 
 
 
@@ -210,23 +224,23 @@ namespace Ninjacat.Characters.Control
             // If paused, run pause controls
             if (UGen.isPaused()) {
                 pauseMenu.controlInterface(buttons);
-                buttons.setAll(false);
+                buttons.setPresses(false);
             }
             else { // If not paused
                 // If in quick menu, run quick menu controls
                 if (quickMenu.isOpen()) {
                     quickMenu.controlInterface(buttons);
-                    buttons.setAll(false);
+                    buttons.setPresses(false);
                 }
                 else if (buttons.qMenu) { // If not in quick menu, check the quick menu button
                     quickMenu.initMenu();
-                    buttons.setAll(false);
+                    buttons.setPresses(false);
                 }
 
                 // If pause button has been pressed, pause the game
                 if (buttons.pause) {
                     pauseMenu.initMenu();
-                    buttons.setAll(false);
+                    buttons.setPresses(false);
                 }
             }
 		}
@@ -237,11 +251,12 @@ namespace Ninjacat.Characters.Control
 		private void FixedUpdate() {
             // If not in quick menu, run regular controls
             if (quickMenu.isOpen()) {
-                buttons.setAll(false);
+                buttons.setPersistent(false);
+                buttons.setPresses(false);
             }
 
             controlScheme.controlInterface(buttons);
-            buttons.setAll(false);
+            buttons.setPresses(false);
         }
 
 	} // close ControlSchemes
