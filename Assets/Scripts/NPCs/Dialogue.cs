@@ -6,8 +6,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using Ninjacat.Utility;
+using Assets.Scripts.Camera;
 
-namespace Assets.Scripts.Character
+namespace Assets.Scripts.NPCs
 {
 	class Dialogue : IInteract
 	{
@@ -15,9 +16,6 @@ namespace Assets.Scripts.Character
         // * PRIVATE PROPERTIES *
         // ======================
 
-        private Text DialogueBox;
-        private Image DialogueBG;
-        private Image DialoguePortrait;
         [SerializeField] private TextAsset dialogueFile;
         [SerializeField] private Sprite portrait;
         private List<string> lines;       // the separate lines of dialogue stored in text doc
@@ -34,11 +32,6 @@ namespace Assets.Scripts.Character
         // ==================
 
         private void Awake() {
-            // Find dialogue box objects
-            DialogueBox = GameObject.Find("DialogueBox").GetComponent<Text>();
-            DialogueBG = GameObject.Find("DialogueBG").GetComponent<Image>();
-            DialoguePortrait = GameObject.Find("DialoguePortrait").GetComponent<Image>();
-
             // set interaction state to false
             bInteracting = false;
 
@@ -84,11 +77,11 @@ namespace Assets.Scripts.Character
         /// Open the dialogue box image.
         /// </summary>
         private void openDialogueBox() {
-            DialogueBox.text = "";
-            DialogueBox.enabled = true;
-            DialogueBG.enabled = true;
-            DialoguePortrait.sprite = portrait;
-            DialoguePortrait.enabled = true;
+            HUD.hud.DialogueText.text = "";
+            HUD.hud.DialogueText.enabled = true;
+            HUD.hud.DialogueBG.enabled = true;
+            HUD.hud.DialoguePortrait.sprite = portrait;
+            HUD.hud.DialoguePortrait.enabled = true;
             bInteracting = true;
         }
 
@@ -96,10 +89,10 @@ namespace Assets.Scripts.Character
         /// Close the dialogue box image.
         /// </summary>
         private void closeDialogueBox() {
-            DialoguePortrait.enabled = false;
-            DialogueBG.enabled = false;
-            DialogueBox.enabled = false;
-            DialogueBox.text = "";
+            HUD.hud.DialoguePortrait.enabled = false;
+            HUD.hud.DialogueBG.enabled = false;
+            HUD.hud.DialogueText.enabled = false;
+            HUD.hud.DialogueText.text = "";
             bInteracting = false;
         }
 
@@ -137,23 +130,23 @@ namespace Assets.Scripts.Character
 
         private void printDialogue() {
             if (lines.Count > lineNum) { // there are lines left to say
-                DialogueBox.text = lines[lineNum];
+                HUD.hud.DialogueText.text = lines[lineNum];
                 lineNum++;
             }
             else { // there are no regular lines left
                 if (linesRepeat.Count > 0) { // if there are repeat lines
                     if (linesRepeat.Count > lineRNum) // still going through repeatable lines
                     {
-                        DialogueBox.text = linesRepeat[lineRNum];
+                        HUD.hud.DialogueText.text = linesRepeat[lineRNum];
                         lineRNum++;
                     }
                     else { // loop at the first repeat line
-                        DialogueBox.text = linesRepeat[0];
+                        HUD.hud.DialogueText.text = linesRepeat[0];
                         lineRNum = 1;
                     }
                 }
                 else
-                    DialogueBox.text = "...";
+                    HUD.hud.DialogueText.text = "...";
             }
 
         }

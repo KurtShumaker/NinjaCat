@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using Ninjacat.Utility;
+using Assets;
 
 namespace Ninjacat.Characters.Control
 {
@@ -103,7 +104,7 @@ namespace Ninjacat.Characters.Control
 
 
     // =========================
-    // * CONTROL SCHEMES CLASS *
+    // * CONTROL MANAGER CLASS *
     // =========================
 
     [RequireComponent(typeof(ButtonPresses))]
@@ -116,12 +117,14 @@ namespace Ninjacat.Characters.Control
         // * PROPERTIES *
         // ==============
 
-        private IControlScheme controlScheme;  // current control scheme
+        public static ControlManager controls;
+        public static Assets.Scripts.Camera.Camera cam; // sets the camera
+        private IControlScheme controlScheme;           // current control scheme
 
-        private ButtonPresses buttons;         // current state of each button press (true/false)
-		private NormalMovement normalMovement; // A reference to the NormalMovement on the object
-        private PauseMenu pauseMenu;           // Pause Menu object
-        private QuickMenu quickMenu;           // Quick Menu object
+        private ButtonPresses buttons;                  // current state of each button press (true/false)
+		private NormalMovement normalMovement;          // A reference to the NormalMovement on the object
+        private PauseMenu pauseMenu;                    // Pause Menu object
+        private QuickMenu quickMenu;                    // Quick Menu object
 
 
 
@@ -130,8 +133,10 @@ namespace Ninjacat.Characters.Control
         // ===================
 
         // Initialize Control Values
-		private void Start()
+		private void Awake()
 		{
+            controls = this;
+
             // get class instances
             buttons = new ButtonPresses();
             normalMovement = GetComponent<NormalMovement>();
@@ -141,7 +146,6 @@ namespace Ninjacat.Characters.Control
             // initialize button presses and joysticks to false
             buttons.setPresses(false);
             buttons.setPersistent(false);
-
 
             // initialize controlScheme to default
             controlScheme = normalMovement;
@@ -242,6 +246,9 @@ namespace Ninjacat.Characters.Control
                     pauseMenu.initMenu();
                     buttons.setPresses(false);
                 }
+
+                // Not in any menus, control camera
+                cam.controlInterface(buttons);
             }
 		}
 

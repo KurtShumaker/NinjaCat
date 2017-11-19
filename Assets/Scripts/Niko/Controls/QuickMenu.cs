@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Ninjacat.Utility;
+using Assets.Scripts.Camera;
 
 namespace Ninjacat.Characters.Control {
     public class QuickMenu : MonoBehaviour, IMenuControl

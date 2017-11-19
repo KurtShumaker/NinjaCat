@@ -2,15 +2,13 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Ninjacat.Utility;
+using Assets.Scripts.Camera;
 
 namespace Ninjacat.Characters.Control {
     public class PauseMenu : MonoBehaviour, IMenuControl
     {
-        void Awake() {
-
-        }
-
         public void controlInterface(ButtonPresses btns) {
+            // If pause button has been pressed, exit the pause menu
             if (btns.pause) {
                 exitMenu();
                 return;
@@ -19,9 +17,11 @@ namespace Ninjacat.Characters.Control {
 
         public void initMenu() {
             UGen.pause();
+            HUD.hud.MenuBG.enabled = true;
         }
 
         public void exitMenu() {
+            HUD.hud.MenuBG.enabled = false;
             UGen.resume();
         }
     } // close class
